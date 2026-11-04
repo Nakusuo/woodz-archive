@@ -1,0 +1,10 @@
+node_modules/
+# CSS generado por Tailwind (lo compila el despliegue)
+web/css/
+.vercel/
+.DS_Store
+*.log
+# Copias generadas por tools/preparar.mjs
+web/datos/
+web/js/vendor/
+web/fonts/
