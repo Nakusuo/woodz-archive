@@ -124,33 +124,48 @@ function cancion(c, i) {
     }, icono('play', 'size-4')));
 }
 
+/** Reconoce la plataforma por la dirección, no por la columna (en la hoja a veces se cruzan). */
+function plataformaDe(url) {
+  const host = new URL(url).hostname;
+  if (host === 'open.spotify.com') return 'Spotify';
+  if (host === 'music.apple.com') return 'Apple Music';
+  if (host === 'music.youtube.com') return 'YouTube Music';
+  return '';
+}
+
+/** open.spotify.com/intl-es/album/ID → open.spotify.com/embed/album/ID (también sirve para canciones). */
+function embedSpotify(url) {
+  const m = new URL(url).pathname.match(/\/(album|track|playlist)\/([A-Za-z0-9]+)/);
+  return m ? `https://open.spotify.com/embed/${m[1]}/${m[2]}` : '';
+}
+
 /** Escuchar (CU-05): reproductor de Spotify al pulsar, y enlaces a las demás plataformas. */
 function escuchar(disco) {
-  const spotify = urlSegura(disco.url_spotify);
-  const otras = [
-    ['Apple Music', urlSegura(disco.url_apple_music)],
-    ['YouTube Music', urlSegura(disco.url_youtube_music)],
-  ].filter(([, url]) => url);
+  const enlaces = new Map();
+  for (const url of [disco.url_spotify, disco.url_apple_music, disco.url_youtube_music].map(urlSegura).filter(Boolean)) {
+    const plataforma = plataformaDe(url);
+    if (plataforma && !enlaces.has(plataforma)) enlaces.set(plataforma, url);
+  }
+  const spotify = enlaces.has('Spotify') ? embedSpotify(enlaces.get('Spotify')) : '';
 
-  if (!spotify && !otras.length) return el('p', { class: 'mt-5 text-sm text-texto-suave', texto: 'Enlaces para escuchar pendientes.' });
+  if (!enlaces.size) return el('p', { class: 'mt-5 text-sm text-texto-suave', texto: 'Enlaces para escuchar pendientes.' });
 
   const caja = el('div', { class: 'mt-5' });
   const botones = el('div', { class: 'flex flex-wrap gap-2' });
 
   if (spotify) {
-    const embed = spotify.replace('open.spotify.com/', 'open.spotify.com/embed/');
     botones.append(el('button', {
       type: 'button', class: 'inline-flex min-h-11 items-center gap-2 rounded-full bg-acento px-5 text-sm font-semibold text-fondo transition hover:brightness-110',
       onclick: (e) => {
         e.currentTarget.remove();
         caja.append(el('iframe', {
-          src: embed, title: `${disco.titulo} en Spotify`, width: '100%', height: 152, loading: 'lazy',
+          src: spotify, title: `${disco.titulo} en Spotify`, width: '100%', height: 152, loading: 'lazy',
           allow: 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture', class: 'mt-3 rounded-xl border-0',
         }));
       },
     }, icono('play', 'size-4'), 'Escuchar aquí'));
   }
-  for (const [nombre, url] of otras) {
+  for (const [nombre, url] of enlaces) {
     botones.append(el('a', {
       href: url, target: '_blank', rel: 'noopener',
       class: 'inline-flex min-h-11 items-center gap-2 rounded-full border border-linea px-5 text-sm font-semibold transition hover:border-texto',

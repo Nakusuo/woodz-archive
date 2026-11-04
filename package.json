@@ -8,7 +8,8 @@
     "build": "node tools/preparar.mjs && tailwindcss -i src/styles.css -o web/css/styles.css --minify",
     "dev:css": "tailwindcss -i src/styles.css -o web/css/styles.css --watch",
     "dev:web": "python3 -m http.server 5510 --directory web",
-    "dev": "npm run build && (npm run dev:css & npm run dev:web)"
+    "dev": "npm run build && (npm run dev:css & npm run dev:web)",
+    "hoja": "node tools/hoja.mjs"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.4",

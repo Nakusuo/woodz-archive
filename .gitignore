@@ -8,3 +8,6 @@ web/css/
 web/datos/
 web/js/vendor/
 web/fonts/
+
+# ID de la hoja de Google (no se publica: el repo es público)
+.hoja
