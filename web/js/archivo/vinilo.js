@@ -100,13 +100,17 @@ export function pintarDiscografia(lanzamientos, canciones) {
 function ficha(disco, canciones) {
   const meta = [nombreTipo(disco.tipo), disco.fecha].filter(Boolean).join(', ');
   return el('div', { class: 'animate-aparecer' },
-    el('div', { class: 'flex items-center gap-4 lg:block' },
-      portada(disco, 'size-24 shrink-0 rounded-lg shadow-2xl shadow-black lg:size-40 [container-type:inline-size]'),
-      el('div', { class: 'min-w-0 lg:mt-5' },
+    el('div', { class: 'flex items-center gap-4' },
+      portada(disco, 'size-24 shrink-0 rounded-lg shadow-2xl shadow-black lg:size-28 [container-type:inline-size]'),
+      el('div', { class: 'min-w-0' },
         el('h3', { class: 'font-display text-2xl font-semibold uppercase leading-tight tracking-[0.06em]', texto: disco.titulo }),
         el('p', { class: 'mt-2 font-mono text-sm text-texto-suave', texto: meta || 'Tipo y fecha pendientes' }))),
     canciones.length
-      ? el('ol', { class: 'mt-6 divide-y divide-linea border-y border-linea' }, canciones.map((c, i) => cancion(c, i)))
+      // Con muchas canciones la lista se desplaza por dentro y no alarga la página.
+      ? el('ol', {
+        class: 'lista-canciones mt-6 max-h-[17rem] divide-y divide-linea overflow-y-auto overscroll-contain border-y border-linea pr-1 lg:max-h-[15rem]',
+        tabindex: '0', 'aria-label': `Canciones de ${disco.titulo}`,
+      }, canciones.map((c, i) => cancion(c, i)))
       : el('p', { class: 'mt-6 border-y border-linea py-4 text-sm text-texto-suave', texto: 'Lista de canciones pendiente.' }),
     escuchar(disco));
 }

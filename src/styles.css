@@ -342,6 +342,13 @@
     }
   }
 
+  /* Barra de desplazamiento fina para la lista de canciones y la de discos. */
+  .lista-canciones,
+  #discos {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-linea) transparent;
+  }
+
   /* Bloque gris animado mientras llegan los datos (RF-06). */
   .esqueleto {
     background: linear-gradient(100deg, var(--color-superficie) 30%, var(--color-superficie-alta) 50%, var(--color-superficie) 70%);
