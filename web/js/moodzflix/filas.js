@@ -1,6 +1,7 @@
 /**
  * Filas por categoría (CU-07): una fila horizontal por cada Categoria de la pestaña Videos.
  */
+import { t } from '../idioma.js';
 import { IMAGEN_RESERVA } from '../config.js';
 import { normalizar } from '../datos.js';
 import { mensaje } from '../comun.js';
@@ -20,7 +21,7 @@ export function pintarFilas(videos) {
   });
 
   if (!validos.length) {
-    contenedor.replaceChildren(mensaje(videos ? 'Todavía no hay videos en la hoja.' : 'No pudimos cargar los videos ahora.', 'px-4 sm:px-10'));
+    contenedor.replaceChildren(mensaje(videos ? t('sinVideos') : t('errorVideos'), 'px-4 sm:px-10'));
     return;
   }
 
@@ -56,7 +57,7 @@ function fila(nombre, videos) {
 
   const flecha = (dir) => el('button', {
     type: 'button',
-    'aria-label': dir < 0 ? `Anteriores en ${nombre}` : `Siguientes en ${nombre}`,
+    'aria-label': dir < 0 ? t('anteriores', nombre) : t('siguientes', nombre),
     class: `absolute top-0 ${dir < 0 ? 'left-0' : 'right-0'} z-10 hidden aspect-video w-10 items-center justify-center text-texto/80 opacity-0 transition hover:text-white group-hover/f:opacity-100 focus-visible:opacity-100 sm:flex sm:w-10`,
     onclick: () => pista.scrollBy({ left: dir * pista.clientWidth * 0.85, behavior: 'smooth' }),
   }, el('span', { class: 'grid size-9 place-items-center rounded-full bg-black/70' }, icono(dir < 0 ? 'izquierda' : 'derecha', 'size-5')));
@@ -80,5 +81,5 @@ function fila(nombre, videos) {
 function pintarNavegacion(categorias) {
   const nav = document.getElementById('navegacion');
   const enlace = (texto, href) => el('a', { href, class: 'rounded-full px-4 py-1.5 text-texto-suave transition hover:bg-superficie-alta hover:text-texto', texto });
-  nav.replaceChildren(enlace('Inicio', '#'), ...categorias.map((c) => enlace(c.replace(/ y .*/, ''), `#${ancla(c)}`)));
+  nav.replaceChildren(enlace(t('inicio'), '#'), ...categorias.map((c) => enlace(c.replace(/ y .*/, ''), `#${ancla(c)}`)));
 }

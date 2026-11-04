@@ -2,12 +2,14 @@
  * Arranque de WOODZ Archive (index.html): carga las pestañas y pinta cada sección.
  */
 import { cargar } from '../datos.js';
+import { aplicarIdioma, recuperarScroll } from '../idioma.js';
 import { activarCabecera, activarImagenesDeReserva, pintarPie } from '../comun.js';
 import { pintarPortada } from './portada.js';
 import { pintarTimeline } from './timeline.js';
 import { pintarDiscografia } from './vinilo.js';
 import { pintarRedes } from './redes.js';
 
+aplicarIdioma();
 activarImagenesDeReserva();
 activarCabecera();
 
@@ -18,4 +20,5 @@ document.addEventListener('DOMContentLoaded', async () => {
   pintarDiscografia(datos.lanzamientos, datos.canciones);
   pintarRedes(datos.redes);
   pintarPie(datos.creditos);
+  recuperarScroll();
 });

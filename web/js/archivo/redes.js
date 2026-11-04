@@ -2,6 +2,7 @@
  * Sigue a WOODZ / Escucha a WOODZ (RF-15): enlaces de la pestaña Redes agrupados por Seccion.
  * La sección se esconde si no hay ninguno.
  */
+import { t } from '../idioma.js';
 import { icono } from '../iconos.js';
 import { el, urlSegura } from '../seguro.js';
 
@@ -12,8 +13,8 @@ export function pintarRedes(redes) {
   if (!filas.length) return;
 
   const grupos = [
-    ['Sigue a WOODZ', filas.filter((r) => !/^escucha/i.test(r.seccion))],
-    ['Escúchalo en', filas.filter((r) => /^escucha/i.test(r.seccion))],
+    [t('sigue'), filas.filter((r) => !/^escucha/i.test(r.seccion))],
+    [t('escucha'), filas.filter((r) => /^escucha/i.test(r.seccion))],
   ].filter(([, lista]) => lista.length);
 
   document.getElementById('redes-lista').replaceChildren(...grupos.map(([titulo, lista]) =>

@@ -2,13 +2,14 @@
  * Music Vault (CU-04 y CU-05): lista de lanzamientos, vinilo que gira con la portada,
  * canciones y enlaces para escuchar.
  */
+import { t } from '../idioma.js';
 import { claveTexto } from '../datos.js';
 import { mensaje } from '../comun.js';
 import { icono } from '../iconos.js';
 import { el, urlSegura } from '../seguro.js';
 
-const TIPOS = { album: 'Álbum', mini_album: 'Mini álbum', single: 'Single' };
-const nombreTipo = (tipo) => TIPOS[(tipo || '').toLowerCase().replace(/[\s-]+/g, '_')] || tipo || '';
+const TIPOS = { album: 'album', mini_album: 'miniAlbum', single: 'single' };
+const nombreTipo = (tipo) => { const k = TIPOS[(tipo || '').toLowerCase().replace(/[\s-]+/g, '_')]; return k ? t(k) : tipo || ''; };
 const anio = (fecha) => (fecha || '').slice(0, 4);
 
 /**
@@ -41,7 +42,7 @@ export function pintarDiscografia(lanzamientos, canciones) {
     .sort((a, b) => (b.fecha || '0').localeCompare(a.fecha || '0'));
 
   if (!discos.length) {
-    lista.replaceChildren(el('li', {}, mensaje(lanzamientos ? 'Todavía no hay discos en la hoja.' : 'No pudimos cargar la discografía ahora.')));
+    lista.replaceChildren(el('li', {}, mensaje(lanzamientos ? t('sinDiscos') : t('errorDiscos'))));
     return;
   }
 
@@ -86,7 +87,7 @@ export function pintarDiscografia(lanzamientos, canciones) {
     portada(disco, 'size-12 shrink-0 rounded', { mini: true }),
     el('span', { class: 'min-w-0' },
       el('span', { class: 'block truncate font-semibold group-aria-pressed:text-acento', texto: disco.titulo }),
-      el('span', { class: 'block truncate font-mono text-xs text-texto-suave', texto: meta || 'Datos pendientes' })));
+      el('span', { class: 'block truncate font-mono text-xs text-texto-suave', texto: meta || t('datosPendientes') })));
     botones.set(disco, boton);
     return el('li', { 'data-tipo': nombreTipo(disco.tipo) }, boton);
   }));
@@ -104,14 +105,14 @@ function ficha(disco, canciones) {
       portada(disco, 'size-24 shrink-0 rounded-lg shadow-2xl shadow-black lg:size-28 [container-type:inline-size]'),
       el('div', { class: 'min-w-0' },
         el('h3', { class: 'font-display text-2xl font-semibold uppercase leading-tight tracking-[0.06em]', texto: disco.titulo }),
-        el('p', { class: 'mt-2 font-mono text-sm text-texto-suave', texto: meta || 'Tipo y fecha pendientes' }))),
+        el('p', { class: 'mt-2 font-mono text-sm text-texto-suave', texto: meta || t('tipoPendiente') }))),
     canciones.length
       // Con muchas canciones la lista se desplaza por dentro y no alarga la página.
       ? el('ol', {
         class: 'lista-canciones mt-6 max-h-[17rem] divide-y divide-linea overflow-y-auto overscroll-contain border-y border-linea pr-1 lg:max-h-[15rem]',
-        tabindex: '0', 'aria-label': `Canciones de ${disco.titulo}`,
+        tabindex: '0', 'aria-label': t('cancionesDe', disco.titulo),
       }, canciones.map((c, i) => cancion(c, i)))
-      : el('p', { class: 'mt-6 border-y border-linea py-4 text-sm text-texto-suave', texto: 'Lista de canciones pendiente.' }),
+      : el('p', { class: 'mt-6 border-y border-linea py-4 text-sm text-texto-suave', texto: t('cancionesPendientes') }),
     escuchar(disco));
 }
 
@@ -121,10 +122,10 @@ function cancion(c, i) {
   return el('li', { class: 'flex items-center gap-3 py-2.5' },
     el('span', { class: 'w-6 shrink-0 font-mono text-xs text-texto-suave', texto: String(c.numero || i + 1).padStart(2, '0') }),
     el('span', { class: 'min-w-0 flex-1 truncate' }, c.titulo,
-      principal && el('span', { class: 'ml-2 rounded-sm border border-acento/50 px-1.5 py-px align-middle font-mono text-[0.6rem] uppercase text-acento', texto: 'Principal' })),
+      principal && el('span', { class: 'ml-2 rounded-sm border border-acento/50 px-1.5 py-px align-middle font-mono text-[0.6rem] uppercase text-acento', texto: t('principal') })),
     video && el('a', {
       href: video, target: '_blank', rel: 'noopener', class: 'grid size-9 shrink-0 place-items-center rounded-full text-texto-suave transition hover:bg-superficie-alta hover:text-texto',
-      'aria-label': `Ver el video de ${c.titulo} en YouTube`,
+      'aria-label': t('verVideo', c.titulo),
     }, icono('play', 'size-4')));
 }
 
@@ -152,7 +153,7 @@ function escuchar(disco) {
   }
   const spotify = enlaces.has('Spotify') ? embedSpotify(enlaces.get('Spotify')) : '';
 
-  if (!enlaces.size) return el('p', { class: 'mt-5 text-sm text-texto-suave', texto: 'Enlaces para escuchar pendientes.' });
+  if (!enlaces.size) return el('p', { class: 'mt-5 text-sm text-texto-suave', texto: t('escucharPendiente') });
 
   const caja = el('div', { class: 'mt-5' });
   const botones = el('div', { class: 'flex flex-wrap gap-2' });
@@ -163,11 +164,11 @@ function escuchar(disco) {
       onclick: (e) => {
         e.currentTarget.remove();
         caja.append(el('iframe', {
-          src: spotify, title: `${disco.titulo} en Spotify`, width: '100%', height: 152, loading: 'lazy',
+          src: spotify, title: t('enSpotify', disco.titulo), width: '100%', height: 152, loading: 'lazy',
           allow: 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture', class: 'mt-3 rounded-xl border-0',
         }));
       },
-    }, icono('play', 'size-4'), 'Escuchar aquí'));
+    }, icono('play', 'size-4'), t('escucharAqui')));
   }
   for (const [nombre, url] of enlaces) {
     botones.append(el('a', {
@@ -184,12 +185,13 @@ function pintarFiltros(lista, discos) {
   const tipos = [...new Set(discos.map((d) => nombreTipo(d.tipo)).filter(Boolean))];
   if (tipos.length < 2) return;
   const caja = document.getElementById('filtros');
-  const chips = ['Todos', ...tipos].map((tipo) => el('button', {
-    type: 'button', 'aria-pressed': String(tipo === 'Todos'),
+  const todos = t('todos');
+  const chips = [todos, ...tipos].map((tipo) => el('button', {
+    type: 'button', 'aria-pressed': String(tipo === todos),
     class: 'min-h-10 rounded-full border border-linea px-4 text-sm transition hover:border-texto aria-pressed:border-texto aria-pressed:bg-texto aria-pressed:text-fondo',
     onclick: () => {
       chips.forEach((c) => c.setAttribute('aria-pressed', String(c.textContent === tipo)));
-      [...lista.children].forEach((li) => { li.hidden = tipo !== 'Todos' && li.dataset.tipo !== tipo; });
+      [...lista.children].forEach((li) => { li.hidden = tipo !== todos && li.dataset.tipo !== tipo; });
     },
   }, tipo));
   caja.replaceChildren(...chips);

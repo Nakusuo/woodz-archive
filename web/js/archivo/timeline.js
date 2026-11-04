@@ -3,6 +3,7 @@
  * un panel abierto con la ficha y el resto como pestañas estrechas con el nombre en vertical.
  * En móvil los paneles van uno debajo de otro.
  */
+import { campo, t } from '../idioma.js';
 import { mensaje } from '../comun.js';
 import { icono } from '../iconos.js';
 import { el, urlSegura } from '../seguro.js';
@@ -12,7 +13,7 @@ export function pintarTimeline(etapas) {
   const filas = (etapas || []).filter((e) => e.nombre);
 
   if (!filas.length) {
-    lista.replaceChildren(el('li', {}, mensaje(etapas ? 'Todavía no hay etapas en la hoja.' : 'No pudimos cargar la historia ahora.')));
+    lista.replaceChildren(el('li', {}, mensaje(etapas ? t('sinEtapas') : t('errorEtapas'))));
     return;
   }
 
@@ -45,10 +46,12 @@ export function pintarTimeline(etapas) {
 
 function panel(etapa, i, total) {
   const foto = urlSegura(etapa.url_foto);
-  const anio = etapa.anio || 'Año pendiente';
+  const anio = etapa.anio || t('anioPendiente');
   const id = `etapa-${i}`;
+  const resumen = campo(etapa, 'resumen');
+  const texto = campo(etapa, 'texto');
   const enlaces = [1, 2, 3]
-    .map((n) => ({ texto: etapa[`texto_enlace_${n}`], url: urlSegura(etapa[`url_enlace_${n}`]) }))
+    .map((n) => ({ texto: campo(etapa, `texto_enlace_${n}`), url: urlSegura(etapa[`url_enlace_${n}`]) }))
     .filter((e) => e.texto && e.url);
 
   return el('li', {
@@ -66,10 +69,10 @@ function panel(etapa, i, total) {
   el('div', { id, class: 'panel-cuerpo', role: 'region', 'aria-label': etapa.nombre },
     el('p', { class: 'font-mono text-sm text-acento', texto: anio }),
     el('h3', { class: 'mt-2 font-display text-3xl font-semibold uppercase leading-none tracking-[0.08em] sm:text-5xl', texto: etapa.nombre }),
-    etapa.resumen && el('p', { class: 'mt-3 text-texto-suave', texto: etapa.resumen }),
-    etapa.texto
-      ? el('p', { class: 'mt-4 max-w-xl whitespace-pre-line text-sm leading-relaxed text-texto/90 sm:text-base', texto: etapa.texto })
-      : el('p', { class: 'mt-4 max-w-md text-sm text-texto-suave', texto: 'El texto, la foto y los enlaces de esta etapa se añaden desde la hoja de contenido.' }),
+    resumen && el('p', { class: 'mt-3 text-texto-suave', texto: resumen }),
+    texto
+      ? el('p', { class: 'mt-4 max-w-xl whitespace-pre-line text-sm leading-relaxed text-texto/90 sm:text-base', texto })
+      : el('p', { class: 'mt-4 max-w-md text-sm text-texto-suave', texto: t('fichaPendiente') }),
     enlaces.length > 0 && el('div', { class: 'mt-5 flex flex-wrap gap-2' }, enlaces.map((e) =>
       el('a', { href: e.url, target: '_blank', rel: 'noopener', class: 'inline-flex min-h-11 items-center gap-2 rounded-full border border-texto/30 bg-black/30 px-5 text-sm font-semibold transition hover:border-texto' },
         e.texto, icono('externo', 'size-4'))))));
