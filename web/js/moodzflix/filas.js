@@ -80,6 +80,6 @@ function fila(nombre, videos) {
 /** Pastillas de la cabecera: Inicio + una por categoría. */
 function pintarNavegacion(categorias) {
   const nav = document.getElementById('navegacion');
-  const enlace = (texto, href) => el('a', { href, class: 'rounded-full px-4 py-1.5 text-texto-suave transition hover:bg-superficie-alta hover:text-texto', texto });
+  const enlace = (texto, href) => el('a', { href, class: 'shrink-0 whitespace-nowrap rounded-full px-4 py-1.5 text-texto-suave transition hover:bg-superficie-alta hover:text-texto', texto });
   nav.replaceChildren(enlace(t('inicio'), '#'), ...categorias.map((c) => enlace(c.replace(/ y .*/, ''), `#${ancla(c)}`)));
 }

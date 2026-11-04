@@ -111,7 +111,7 @@
 | RN-04 | Al abrir el Music Vault no hay ningún disco elegido: el vinilo está quieto y se invita a elegir uno. |
 | RN-05 | Una fila de MOODZFLIX sin videos válidos no se muestra. |
 | RN-06 | Un video sin `Titulo` o sin URL válida se ignora y se avisa en consola con pestaña y fila. |
-| RN-07 | Si `Destacado` tiene varias filas activas, se usa la primera. |
+| RN-07 | Si `Destacado` tiene varias filas activas, el banner es un **carrusel** que pasa de una a otra cada 8 s (con puntos para elegir). Si `URL_Poster` es una miniatura de Google Imágenes y el botón principal es un video de YouTube, se usa la miniatura grande de YouTube. |
 | RN-08 | En `Etapas`, una fila sin `Fuente` se muestra solo en la vista previa, no en la versión publicada. |
 
 ## 5. Modelo de datos (Google Sheets)

@@ -389,3 +389,9 @@
     background-position: -50% 0;
   }
 }
+
+/* Títulos largos del destacado (programas de TV): más pequeños. Fuera de capas para ganar a las utilidades. */
+#destacado-titulo.text-largo {
+  font-size: clamp(1.75rem, 3.6vw, 3rem);
+  line-height: 1.1;
+}

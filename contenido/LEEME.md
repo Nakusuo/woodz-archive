@@ -1,7 +1,7 @@
 # Contenido
 
 - `WOODZ-plantilla-contenido.xlsx`: la plantilla que llena Ange (formato oficial de la hoja).
-- `*.csv`: copia local de cada pestaña. La web la usa mientras no haya URLs de Google Sheets en `web/js/config.js`, y como respaldo si Google falla.
+- `*.csv`: copia de respaldo de cada pestaña. La web lee la hoja **en vivo** (enlace publicado en `web/js/config.js`); esta copia solo se usa si Google falla. Se actualiza con `npm run hoja`.
 
 ## De dónde salen los datos de la maqueta (2026-11-03)
 

@@ -209,7 +209,7 @@ Cada fase se cierra con algo que Ange pueda revisar.
 - **D0.1.** Dos páginas separadas, como pide el PDF: `index.html` (Archivo) y `moodzflix.html`.
 - **D0.2.** No se aloja música ni videos ajenos. Todo se incrusta o se enlaza.
 - **D1 y D2.** 2026-11-03: se llama **MOODZFLIX** y su estilo es tipo **Apple TV** (referencias de Ange).
-- **D3.** 2026-11-03: el contenido está en la hoja de Google de Ange. `npm run hoja` la descarga a `contenido/`; el ID de la hoja va en `.hoja`, fuera del repo público.
+- **D3.** 2026-11-04: la web lee **en vivo** la hoja de Google de Ange publicada como CSV (enlace de solo lectura, en `web/js/config.js`). Los cambios aparecen en unos 5 minutos sin subir nada. Si Google falla, se usa la última copia del navegador o la de `contenido/` (`npm run hoja`, con el ID de edición en `.hoja`, fuera del repo).
 - **D6.** 2026-11-03: el timeline sigue el **segundo pin** de Pinterest: acordeón de paneles, uno abierto y el resto como pestañas con el nombre en vertical.
 - **D-portada.** 2026-11-03: la portada sigue el **TikTok** de Ange: dos filas de clips en blanco y negro que se deslizan, título en medio con letra serif espaciada (Cinzel) y un clip que recupera el color cada pocos segundos.
 
