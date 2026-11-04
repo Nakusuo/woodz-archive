@@ -151,8 +151,8 @@ Guía para la fase de diseño. Se respetan las reglas anti AI-slop del equipo.
 
 | Página | Dirección | Referencias |
 |---|---|---|
-| Archivo, portada | Video en blanco y negro con un filtro de grises y algo más de contraste. Texto grande y centrado. | Ilustración 1, TikTok de Ange |
-| Archivo, timeline | Limpio: año y nombre en la tarjeta, todo lo demás dentro del despliegue. | Pins de Pinterest (el segundo, "para que no se vea muy cargado") |
+| Archivo, portada | Dos filas de clips en blanco y negro que se deslizan, título en medio (Cinzel) y dos botones. Un clip a la vez recupera el color. | TikTok de Ange |
+| Archivo, timeline | Acordeón: un panel abierto con la ficha y los demás como pestañas estrechas con el nombre en vertical. En móvil, uno debajo del otro. | Segundo pin de Pinterest |
 | Archivo, Music Vault | Lista a la izquierda, vinilo al centro, portada y datos a la derecha. En móvil, uno debajo del otro. El vinilo gira solo con un disco elegido. | Reproductor de vinilo rojo y negro, ilustración 3 |
 | MOODZFLIX | Tipo Apple TV: imagen grande a sangre, tarjetas con esquinas suaves, poco texto y mucho aire. Que no parezca una copia de SVTFLIX. | Captura de *Silo* en Apple TV+ |
 
@@ -208,16 +208,16 @@ Cada fase se cierra con algo que Ange pueda revisar.
 - **D0.** Mismo enfoque que SVTFLIX: web estática, sin backend, coste cero, contenido en Google Sheets.
 - **D0.1.** Dos páginas separadas, como pide el PDF: `index.html` (Archivo) y `moodzflix.html`.
 - **D0.2.** No se aloja música ni videos ajenos. Todo se incrusta o se enlaza.
+- **D1 y D2.** 2026-11-03: se llama **MOODZFLIX** y su estilo es tipo **Apple TV** (referencias de Ange).
+- **D3.** 2026-11-03: el contenido está en la hoja de Google de Ange. `npm run hoja` la descarga a `contenido/`; el ID de la hoja va en `.hoja`, fuera del repo público.
+- **D6.** 2026-11-03: el timeline sigue el **segundo pin** de Pinterest: acordeón de paneles, uno abierto y el resto como pestañas con el nombre en vertical.
+- **D-portada.** 2026-11-03: la portada sigue el **TikTok** de Ange: dos filas de clips en blanco y negro que se deslizan, título en medio con letra serif espaciada (Cinzel) y un clip que recupera el color cada pocos segundos.
 
 ### Pendientes (necesitan respuesta de Ange)
 | ID | Pregunta | Recomendación |
 |---|---|---|
-| **D1** | ¿La plataforma se llama **WOODZFLIX** (PDF) o **MOODZFLIX** (Telegram)? | **MOODZFLIX.** Es lo último que pidió Ange y es el nombre del fandom. |
-| **D2** | ¿Estilo de MOODZFLIX tipo Netflix (como SVTFLIX) o tipo Apple TV? | **Apple TV.** Es lo último que pidió Ange y así no parece una copia de SVTFLIX. |
-| **D3** | ¿Los datos van en un archivo `data.js` (PDF) o en Google Sheets (SVTFLIX)? | **Google Sheets.** Cualquier fan puede añadir un video sin tocar código, y se reutiliza el motor de SVTFLIX. |
 | **D4** | ¿Cómo se "escucha" un disco en el tocadiscos? | **Embed de Spotify del álbum + enlaces a otras plataformas.** No se puede alojar el audio (R6). |
 | **D5** | ¿Qué entra en la discografía? | **Lanzamientos como WOODZ**: álbumes, mini álbumes y singles digitales. Lo de UNIQ, Luizy y X1 va en el timeline, no en el vinilo. Colaboraciones y OST: decidir si entran como v1.1. |
-| **D6** | ¿Cuál de los dos pins de Pinterest se usa para el timeline? | **El segundo** ("para que no se vea muy cargado"). Revisarlos juntos: aquí no se pudieron abrir. |
 | **D7** | ¿Qué clip va en la portada y quién lo prepara? | Un solo clip de 10–20 s elegido por Ange, convertido a B&N y comprimido por el equipo. |
 | **D8** | ¿Qué colores de acento? El PDF usa dorado y rojo. | Archivo: blanco y negro con **dorado** como único acento. MOODZFLIX: un acento propio, a definir en diseño. |
 | **D9** | ¿Quién edita la hoja? | Solo el equipo de Ange, con la fila de encabezados protegida. |

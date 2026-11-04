@@ -17,7 +17,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap">
   <link rel="stylesheet" href="css/styles.css">
 
   <script src="js/vendor/papaparse.min.js" defer></script>
@@ -30,7 +30,7 @@
 
   <header id="cabecera" class="cabecera fixed inset-x-0 top-0 z-40">
     <div class="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:h-16 sm:px-10">
-      <a href="#inicio" class="font-display text-lg uppercase tracking-wide sm:text-xl">WOODZ <span class="text-texto-suave">Archive</span></a>
+      <a href="#inicio" class="font-display text-sm font-semibold uppercase tracking-[0.3em] sm:text-base">WOODZ<span class="text-texto-suave">:</span> Archive</a>
       <nav aria-label="Secciones" class="flex items-center gap-1 text-sm font-medium">
         <a href="#historia" class="hidden rounded-full px-3 py-2 text-texto-suave transition hover:text-texto sm:block">Historia</a>
         <a href="#discografia" class="hidden rounded-full px-3 py-2 text-texto-suave transition hover:text-texto sm:block">Discografía</a>
@@ -40,52 +40,36 @@
   </header>
 
   <main class="overflow-x-clip">
-    <!-- Portada (RF-07 a RF-11) -->
-    <section id="inicio" class="relative isolate flex min-h-svh items-center justify-center overflow-hidden" aria-labelledby="portada-titulo">
-      <div class="blanco-negro absolute inset-0 -z-10" id="portada-medio">
-        <img id="portada-poster" alt="" width="1280" height="720" class="size-full object-cover opacity-0 transition-opacity duration-700">
-      </div>
-      <div class="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,transparent_25%,rgb(0_0_0/0.8)_100%)]"></div>
-      <div class="absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-t from-fondo to-transparent"></div>
-      <div class="grano absolute inset-0 -z-10"></div>
+    <!-- Portada (RF-07 a RF-11): cuadrícula de clips en blanco y negro con el título en medio (referencia: TikTok de Ange) -->
+    <section id="inicio" class="portada relative isolate flex min-h-svh flex-col justify-center gap-[clamp(1rem,3svh,2rem)] overflow-hidden pb-6 pt-20" aria-labelledby="portada-titulo">
+      <div class="portada-carril" aria-hidden="true"><div class="portada-fila" data-fila="1"></div></div>
 
-      <div class="px-4 pt-14 text-center">
-        <p class="font-mono text-xs uppercase tracking-[0.3em] text-texto-suave">Archivo fan no oficial</p>
-        <h1 id="portada-titulo" class="mx-auto mt-5 max-w-5xl text-balance font-display text-[clamp(3.2rem,11vw,8.5rem)] uppercase leading-[0.92]">Welcome to WOODZ Archive</h1>
-        <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <a id="boton-conoce" href="#historia" class="inline-flex min-h-12 items-center rounded-full bg-acento px-7 font-semibold text-fondo transition hover:brightness-110 active:scale-[.98]">Conoce a WOODZ</a>
-          <a id="boton-moodzflix" href="moodzflix.html" class="inline-flex min-h-12 items-center rounded-full border border-texto/60 px-7 font-semibold transition hover:border-texto hover:bg-texto hover:text-fondo active:scale-[.98]">Ver MOODZFLIX</a>
+      <div class="px-4 text-center">
+        <p id="portada-antetitulo" class="font-mono text-[0.7rem] uppercase tracking-[0.45em] text-texto-suave sm:text-xs">Welcome to</p>
+        <h1 id="portada-titulo" class="mt-2 font-display text-[clamp(2rem,6.4vw,4.75rem)] font-semibold uppercase leading-none tracking-[0.12em]">WOODZ Archive</h1>
+        <div class="mt-5 flex flex-wrap items-center justify-center gap-3">
+          <a id="boton-conoce" href="#historia" class="inline-flex min-h-11 items-center rounded-full bg-acento px-6 font-mono text-xs font-medium uppercase tracking-[0.2em] text-fondo transition hover:brightness-110 active:scale-[.98]">Conoce a WOODZ</a>
+          <a id="boton-moodzflix" href="moodzflix.html" class="inline-flex min-h-11 items-center rounded-full border border-texto/50 px-6 font-mono text-xs font-medium uppercase tracking-[0.2em] transition hover:border-texto hover:bg-texto hover:text-fondo active:scale-[.98]">Ver MOODZFLIX</a>
         </div>
       </div>
+
+      <div class="portada-carril" aria-hidden="true"><div class="portada-fila" data-fila="2"></div></div>
+      <div class="grano absolute inset-0 -z-10"></div>
     </section>
 
-    <!-- Timeline (RF-12 a RF-14) -->
-    <section id="historia" class="scroll-mt-16 py-20 sm:py-28" aria-labelledby="historia-titulo">
+    <!-- Timeline (RF-12 a RF-14): acordeón de paneles (referencia: Pinterest de Ange) -->
+    <section id="historia" class="scroll-mt-14 py-20 sm:py-16" aria-labelledby="historia-titulo">
       <div class="mx-auto max-w-7xl px-4 sm:px-10">
-        <div class="flex items-end justify-between gap-6">
-          <div>
-            <p class="font-mono text-xs uppercase tracking-[0.3em] text-acento">Historia</p>
-            <h2 id="historia-titulo" class="mt-3 font-display text-5xl uppercase leading-none sm:text-6xl">Conoce a WOODZ</h2>
-            <p class="mt-3 max-w-md text-texto-suave">Su carrera, etapa por etapa. Toca una para ver más.</p>
-          </div>
-          <div class="hidden gap-2 sm:flex">
-            <button id="timeline-anterior" type="button" class="grid size-11 place-items-center rounded-full border border-linea transition hover:border-texto disabled:opacity-30 disabled:hover:border-linea" aria-label="Etapas anteriores"></button>
-            <button id="timeline-siguiente" type="button" class="grid size-11 place-items-center rounded-full border border-linea transition hover:border-texto disabled:opacity-30 disabled:hover:border-linea" aria-label="Etapas siguientes"></button>
-          </div>
-        </div>
-      </div>
+        <p class="font-mono text-xs uppercase tracking-[0.3em] text-acento">Historia</p>
+        <h2 id="historia-titulo" class="mt-3 font-display text-4xl font-semibold uppercase leading-none tracking-[0.06em] sm:text-5xl">Conoce a WOODZ</h2>
+        <p class="mt-3 max-w-md text-texto-suave">Su carrera, etapa por etapa. Elige una para verla.</p>
 
-      <div class="mx-auto mt-12 max-w-7xl">
-        <ol id="timeline" class="carril scroll-px-4 gap-5 px-4 sm:scroll-px-10 sm:px-10" aria-label="Etapas de su carrera">
-          <li class="esqueleto h-36 w-60 rounded-lg"></li>
-          <li class="esqueleto h-36 w-60 rounded-lg"></li>
-          <li class="esqueleto h-36 w-60 rounded-lg"></li>
-          <li class="esqueleto h-36 w-60 rounded-lg"></li>
+        <ol id="timeline" class="acordeon mt-8" aria-label="Etapas de su carrera">
+          <li class="esqueleto rounded-xl md:flex-1"></li>
+          <li class="esqueleto rounded-xl"></li>
+          <li class="esqueleto rounded-xl"></li>
+          <li class="esqueleto rounded-xl"></li>
         </ol>
-      </div>
-
-      <div class="mx-auto max-w-7xl px-4 sm:px-10">
-        <div id="etapa-detalle" class="mt-8" role="region" aria-live="polite" hidden></div>
       </div>
     </section>
 
@@ -95,7 +79,7 @@
         <div class="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
           <div>
             <p class="font-mono text-xs uppercase tracking-[0.3em] text-acento">Music Vault</p>
-            <h2 id="discografia-titulo" class="mt-3 font-display text-5xl uppercase leading-none sm:text-6xl">Discografía</h2>
+            <h2 id="discografia-titulo" class="mt-3 font-display text-4xl font-semibold uppercase leading-none tracking-[0.06em] sm:text-5xl">Discografía</h2>
             <p class="mt-3 max-w-md text-texto-suave">Elige un disco para ponerlo en el tocadiscos.</p>
           </div>
           <div id="filtros" class="flex flex-wrap gap-2" hidden></div>
@@ -134,7 +118,7 @@
     <!-- Redes (RF-15) -->
     <section id="redes" class="border-t border-linea py-14" aria-labelledby="redes-titulo" hidden>
       <div class="mx-auto grid max-w-7xl gap-8 px-4 sm:px-10 lg:grid-cols-[16rem_1fr]">
-        <h2 id="redes-titulo" class="font-display text-3xl uppercase">Redes</h2>
+        <h2 id="redes-titulo" class="font-display text-2xl font-semibold uppercase tracking-[0.06em]">Redes</h2>
         <div id="redes-lista" class="grid gap-8 md:grid-cols-2"></div>
       </div>
     </section>
@@ -144,7 +128,7 @@
   <footer class="border-t border-linea">
     <div class="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-12 sm:flex-row sm:items-end sm:justify-between sm:px-10">
       <div class="max-w-xl space-y-3 text-sm text-texto-suave">
-        <p class="font-display text-xl uppercase text-texto">WOODZ Archive</p>
+        <p class="font-display text-base font-semibold uppercase tracking-[0.3em] text-texto">WOODZ: Archive</p>
         <p>Sitio hecho por fans. No es oficial ni tiene relación con WOODZ ni con su agencia. Los videos y la música pertenecen a sus dueños.</p>
         <div data-creditos>
           <span>Créditos: </span><ul id="creditos" class="inline [&>li]:inline [&>li+li]:before:content-[',_']"></ul>

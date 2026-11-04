@@ -12,8 +12,8 @@ activarImagenesDeReserva();
 activarCabecera();
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const datos = await cargar(['portada', 'etapas', 'lanzamientos', 'canciones', 'redes', 'creditos']);
-  pintarPortada(datos.portada);
+  const datos = await cargar(['portada', 'videos', 'etapas', 'lanzamientos', 'canciones', 'redes', 'creditos']);
+  pintarPortada(datos.portada, datos.videos);
   pintarTimeline(datos.etapas);
   pintarDiscografia(datos.lanzamientos, datos.canciones);
   pintarRedes(datos.redes);

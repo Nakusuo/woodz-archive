@@ -1,101 +1,76 @@
 /**
- * Timeline horizontal (CU-03): una tarjeta por etapa y una ficha que se despliega debajo.
+ * Timeline (CU-03) como acordeón de paneles, según la referencia de Ange (Pinterest):
+ * un panel abierto con la ficha y el resto como pestañas estrechas con el nombre en vertical.
+ * En móvil los paneles van uno debajo de otro.
  */
-import { mensaje, reducirMovimiento } from '../comun.js';
+import { mensaje } from '../comun.js';
 import { icono } from '../iconos.js';
 import { el, urlSegura } from '../seguro.js';
 
 export function pintarTimeline(etapas) {
-  const pista = document.getElementById('timeline');
-  const detalle = document.getElementById('etapa-detalle');
+  const lista = document.getElementById('timeline');
   const filas = (etapas || []).filter((e) => e.nombre);
 
   if (!filas.length) {
-    pista.replaceChildren(el('li', {}, mensaje(etapas ? 'Todavía no hay etapas en la hoja.' : 'No pudimos cargar la historia ahora.')));
+    lista.replaceChildren(el('li', {}, mensaje(etapas ? 'Todavía no hay etapas en la hoja.' : 'No pudimos cargar la historia ahora.')));
     return;
   }
 
-  let abierta = null;
+  const paneles = filas.map((etapa, i) => panel(etapa, i, filas.length));
+  const botones = paneles.map((p) => p.querySelector('.panel-pestana'));
 
-  const cerrar = () => {
-    abierta?.setAttribute('aria-expanded', 'false');
-    abierta = null;
-    detalle.hidden = true;
-    detalle.replaceChildren();
+  const abrir = (indice) => {
+    paneles.forEach((p, i) => {
+      p.toggleAttribute('data-abierto', i === indice);
+      botones[i].setAttribute('aria-expanded', String(i === indice));
+    });
   };
 
-  const abrir = (boton, etapa) => {
-    if (abierta === boton) return cerrar();
-    abierta?.setAttribute('aria-expanded', 'false');
-    abierta = boton;
-    boton.setAttribute('aria-expanded', 'true');
-    detalle.replaceChildren(ficha(etapa, () => { const b = abierta; cerrar(); b?.focus(); }));
-    detalle.hidden = false;
-    detalle.setAttribute('aria-label', `Ficha de ${etapa.nombre}`);
-    // Que la ficha se vea entera sin tener que buscarla.
-    detalle.scrollIntoView({ block: 'nearest', behavior: reducirMovimiento() ? 'auto' : 'smooth' });
-  };
+  botones.forEach((boton, i) => {
+    boton.addEventListener('click', () => abrir(i));
+    // Flechas del teclado: pasar de una etapa a otra (HU-04).
+    boton.addEventListener('keydown', (e) => {
+      const paso = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+      if (!paso) return;
+      e.preventDefault();
+      const siguiente = (i + paso + botones.length) % botones.length;
+      abrir(siguiente);
+      botones[siguiente].focus();
+    });
+  });
 
-  pista.replaceChildren(...filas.map((etapa) => {
-    const boton = el('button', {
-      type: 'button',
-      class: 'etapa group block w-60 text-left sm:w-64',
-      'aria-expanded': 'false',
-      'aria-controls': 'etapa-detalle',
-    },
-    el('span', { class: 'etapa-punto', 'aria-hidden': 'true' }),
-    el('span', { class: `block font-mono text-sm ${etapa.anio ? 'text-acento' : 'text-texto-suave'}`, texto: etapa.anio || 'Año pendiente' }),
-    el('span', { class: 'mt-2 block font-display text-3xl uppercase leading-none transition group-hover:text-acento group-aria-expanded:text-acento', texto: etapa.nombre }),
-    etapa.resumen && el('span', { class: 'mt-2 block text-sm text-texto-suave', texto: etapa.resumen }));
-    boton.addEventListener('click', () => abrir(boton, etapa));
-    return el('li', { class: 'pr-5 last:pr-0' }, boton);
-  }));
-
-  detalle.addEventListener('keydown', (e) => { if (e.key === 'Escape') { const b = abierta; cerrar(); b?.focus(); } });
-  pista.addEventListener('keydown', (e) => { if (e.key === 'Escape' && abierta) cerrar(); });
-
-  activarFlechas(pista);
+  lista.replaceChildren(...paneles);
+  abrir(0);
 }
 
-function ficha(etapa, alCerrar) {
+function panel(etapa, i, total) {
   const foto = urlSegura(etapa.url_foto);
+  const anio = etapa.anio || 'Año pendiente';
+  const id = `etapa-${i}`;
   const enlaces = [1, 2, 3]
     .map((n) => ({ texto: etapa[`texto_enlace_${n}`], url: urlSegura(etapa[`url_enlace_${n}`]) }))
     .filter((e) => e.texto && e.url);
 
-  return el('article', { class: 'animate-aparecer grid gap-6 rounded-xl border border-linea bg-superficie p-5 sm:p-8 md:grid-cols-[minmax(0,18rem)_1fr]' },
-    foto
-      ? el('img', { src: foto, alt: '', loading: 'lazy', width: 600, height: 750, class: 'blanco-negro aspect-[4/5] w-full rounded-lg object-cover md:row-span-2' })
-      : null,
-    el('div', { class: foto ? '' : 'md:col-span-2' },
-      el('div', { class: 'flex items-start justify-between gap-4' },
-        el('div', {},
-          el('p', { class: 'font-mono text-sm text-acento', texto: etapa.anio || 'Año pendiente' }),
-          el('h3', { class: 'mt-1 font-display text-4xl uppercase leading-none sm:text-5xl', texto: etapa.nombre })),
-        el('button', {
-          type: 'button', class: 'grid size-11 shrink-0 place-items-center rounded-full border border-linea transition hover:border-texto',
-          'aria-label': 'Cerrar ficha', onclick: alCerrar,
-        }, icono('cerrar', 'size-5'))),
-      etapa.texto
-        ? el('p', { class: 'mt-5 max-w-2xl whitespace-pre-line leading-relaxed text-texto/90', texto: etapa.texto })
-        : el('p', { class: 'mt-5 max-w-2xl text-texto-suave', texto: 'El texto, la foto y los enlaces de esta etapa se añaden desde la hoja de contenido.' }),
-      enlaces.length > 0 && el('div', { class: 'mt-6 flex flex-wrap gap-2' }, enlaces.map((e) =>
-        el('a', { href: e.url, target: '_blank', rel: 'noopener', class: 'inline-flex min-h-11 items-center gap-2 rounded-full border border-linea px-5 text-sm font-semibold transition hover:border-texto' },
-          e.texto, icono('externo', 'size-4'))))));
-}
-
-/** Flechas de la cabecera de la sección: avanzan casi una pantalla y se apagan en los extremos. */
-function activarFlechas(pista) {
-  const anterior = document.getElementById('timeline-anterior');
-  const siguiente = document.getElementById('timeline-siguiente');
-  anterior.replaceChildren(icono('izquierda', 'size-5'));
-  siguiente.replaceChildren(icono('derecha', 'size-5'));
-  anterior.onclick = () => pista.scrollBy({ left: -pista.clientWidth * 0.8, behavior: 'smooth' });
-  siguiente.onclick = () => pista.scrollBy({ left: pista.clientWidth * 0.8, behavior: 'smooth' });
-  const actualizar = () => {
-    anterior.disabled = pista.scrollLeft < 8;
-    siguiente.disabled = pista.scrollLeft + pista.clientWidth > pista.scrollWidth - 8;
-  };
-  pista.addEventListener('scroll', actualizar, { passive: true });
-  new ResizeObserver(actualizar).observe(pista);
+  return el('li', {
+    class: 'panel',
+    // Cada panel con el brillo en otro sitio, como las superficies de la referencia.
+    style: `--luz: ${Math.round(20 + (60 * i) / Math.max(1, total - 1))}%`,
+  },
+  foto && el('img', { src: foto, alt: '', loading: 'lazy', class: 'panel-foto' }),
+  el('button', {
+    type: 'button', class: 'panel-pestana group', 'aria-expanded': 'false', 'aria-controls': id,
+    'aria-label': `${etapa.nombre}, ${anio}`,
+  },
+  el('span', { class: 'panel-nombre font-display text-base font-semibold uppercase tracking-[0.12em] transition group-hover:text-acento', texto: etapa.nombre }),
+  el('span', { class: `font-mono text-xs ${etapa.anio ? 'text-acento' : 'text-texto-suave'}`, texto: etapa.anio || '—' })),
+  el('div', { id, class: 'panel-cuerpo', role: 'region', 'aria-label': etapa.nombre },
+    el('p', { class: 'font-mono text-sm text-acento', texto: anio }),
+    el('h3', { class: 'mt-2 font-display text-3xl font-semibold uppercase leading-none tracking-[0.08em] sm:text-5xl', texto: etapa.nombre }),
+    etapa.resumen && el('p', { class: 'mt-3 text-texto-suave', texto: etapa.resumen }),
+    etapa.texto
+      ? el('p', { class: 'mt-4 max-w-xl whitespace-pre-line text-sm leading-relaxed text-texto/90 sm:text-base', texto: etapa.texto })
+      : el('p', { class: 'mt-4 max-w-md text-sm text-texto-suave', texto: 'El texto, la foto y los enlaces de esta etapa se añaden desde la hoja de contenido.' }),
+    enlaces.length > 0 && el('div', { class: 'mt-5 flex flex-wrap gap-2' }, enlaces.map((e) =>
+      el('a', { href: e.url, target: '_blank', rel: 'noopener', class: 'inline-flex min-h-11 items-center gap-2 rounded-full border border-texto/30 bg-black/30 px-5 text-sm font-semibold transition hover:border-texto' },
+        e.texto, icono('externo', 'size-4'))))));
 }
