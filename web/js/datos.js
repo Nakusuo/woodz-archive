@@ -64,15 +64,27 @@ function leerCopia(clave) {
 
 async function cargarPestana(clave) {
   const nombre = NOMBRES[clave];
-  const url = HOJAS[clave] || `datos/${nombre}.csv`;
+  const local = `datos/${nombre}.csv`;
+  const url = HOJAS[clave] || local;
   try {
     const filas = parsear(await pedir(url));
     guardarCopia(clave, filas);
     return filas;
   } catch (error) {
+    // 1º la última copia de este navegador; 2º la copia que va con la web (npm run hoja).
     const copia = leerCopia(clave);
-    console.warn(`[WOODZ] No se pudo leer "${nombre}" (${error.message}).`, copia ? 'Uso la última copia guardada.' : 'Sin copia guardada.');
-    return copia;
+    if (copia) {
+      console.warn(`[WOODZ] No se pudo leer "${nombre}" (${error.message}). Uso la última copia guardada.`);
+      return copia;
+    }
+    if (url !== local) {
+      try {
+        console.warn(`[WOODZ] No se pudo leer "${nombre}" de la hoja (${error.message}). Uso la copia de la web.`);
+        return parsear(await pedir(local));
+      } catch { /* tampoco hay copia local */ }
+    }
+    console.warn(`[WOODZ] Sin datos para "${nombre}".`);
+    return null;
   }
 }
 
