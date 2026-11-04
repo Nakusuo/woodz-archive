@@ -103,7 +103,7 @@ function ficha(disco, canciones) {
     el('div', { class: 'flex items-center gap-4 lg:block' },
       portada(disco, 'size-24 shrink-0 rounded-lg shadow-2xl shadow-black lg:size-40 [container-type:inline-size]'),
       el('div', { class: 'min-w-0 lg:mt-5' },
-        el('h3', { class: 'font-display text-4xl uppercase leading-none', texto: disco.titulo }),
+        el('h3', { class: 'font-display text-2xl font-semibold uppercase leading-tight tracking-[0.06em]', texto: disco.titulo }),
         el('p', { class: 'mt-2 font-mono text-sm text-texto-suave', texto: meta || 'Tipo y fecha pendientes' }))),
     canciones.length
       ? el('ol', { class: 'mt-6 divide-y divide-linea border-y border-linea' }, canciones.map((c, i) => cancion(c, i)))

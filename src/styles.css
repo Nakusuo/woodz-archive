@@ -17,7 +17,7 @@
   --color-texto-suave: #a19e97;
   --color-acento: #d9ad3c;
 
-  --font-display: "Anton", "Impact", "Arial Narrow", sans-serif;
+  --font-display: "Cinzel", "Trajan Pro", Georgia, serif;
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", monospace;
 
@@ -100,42 +100,160 @@
     flex-shrink: 0;
   }
 
-  /* ---------- Timeline (RF-12 a RF-14) ---------- */
-  .etapa {
+  /* ---------- Portada: filas de clips (RF-07) ---------- */
+  .portada {
+    /* Alto de cada clip: lo que deja libre el título, sin pasar de ~56vw en móvil. */
+    --alto-tesela: min(calc((100svh - 17rem) / 2), 56vw, 15rem);
+  }
+  /* El carril está quieto y se desvanece hacia los bordes, como en la referencia; la fila de dentro se desliza. */
+  .portada-carril {
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+  }
+  .portada-fila {
+    display: flex;
+    gap: 0.75rem;
+    width: max-content;
+    padding-right: 0.75rem; /* mismo hueco al final: al moverse -50% el bucle encaja sin salto */
+    animation: deriva 120s linear infinite;
+  }
+  .portada-fila[data-fila="2"] {
+    animation-direction: reverse;
+  }
+  .portada-fila:hover {
+    animation-play-state: paused;
+  }
+  .tesela {
+    height: var(--alto-tesela);
+    aspect-ratio: 16 / 9;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 0.375rem;
+    background: var(--color-superficie);
+  }
+  .tesela img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%) contrast(110%) brightness(0.75);
+    transition: filter 1.2s ease;
+  }
+  /* Un clip a la vez recupera el color unos segundos (JS). */
+  .tesela[data-color] img {
+    filter: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .portada-fila {
+      animation: none;
+      margin-inline: auto;
+    }
+  }
+
+  /* ---------- Timeline en acordeón (RF-12 a RF-14) ---------- */
+  .acordeon {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .acordeon > .esqueleto {
+    height: 3.75rem;
+  }
+  .panel {
     position: relative;
-    padding-top: 2.25rem;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    background:
+      radial-gradient(120% 70% at var(--luz, 70%) 105%, rgb(255 255 255 / 0.1), transparent 60%),
+      linear-gradient(180deg, #1a1a1a, #0e0e0e);
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.06);
+    min-height: 3.75rem;
+    transition: box-shadow 0.3s;
   }
-  /* Línea que une las etapas, a la altura del punto. */
-  .etapa::before {
-    content: "";
+  .panel:hover {
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.18);
+  }
+  .panel[data-abierto] {
+    min-height: 20rem;
+  }
+  .panel-foto {
     position: absolute;
-    top: 0.6875rem;
-    left: 0;
-    right: -1.25rem;
-    height: 1px;
-    background: var(--color-linea);
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%) contrast(110%) brightness(0.45);
   }
-  .etapa:last-child::before {
-    right: 0;
-  }
-  .etapa-punto {
+  .panel-pestana {
     position: absolute;
-    top: 0.375rem;
-    left: 0;
-    width: 0.75rem;
-    height: 0.75rem;
-    border-radius: 9999px;
-    border: 1px solid var(--color-texto-suave);
-    background: var(--color-fondo);
-    transition: background-color 0.25s, border-color 0.25s, transform 0.25s;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0 1.25rem;
+    text-align: left;
   }
-  .etapa[aria-expanded="true"] .etapa-punto,
-  .etapa:hover .etapa-punto {
-    border-color: var(--color-acento);
-    background: var(--color-acento);
+  .panel[data-abierto] .panel-pestana {
+    align-items: flex-start;
+    padding-top: 1.25rem;
   }
-  .etapa[aria-expanded="true"] .etapa-punto {
-    transform: scale(1.35);
+  .panel[data-abierto] .panel-pestana > * {
+    visibility: hidden; /* el título lo muestra el cuerpo */
+  }
+  .panel-cuerpo {
+    position: relative;
+    display: none;
+    pointer-events: none;
+  }
+  .panel[data-abierto] .panel-cuerpo {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: inherit;
+    padding: 1.5rem;
+    animation: aparecer 0.45s 0.15s ease-out both;
+  }
+  .panel-cuerpo a {
+    pointer-events: auto;
+  }
+
+  @media (min-width: 768px) {
+    .acordeon {
+      flex-direction: row;
+      height: min(28rem, 60svh);
+    }
+    .acordeon > .esqueleto {
+      height: auto;
+      width: 4.75rem;
+    }
+    .panel {
+      flex: 0 0 4.75rem;
+      min-height: 0;
+      transition: flex-grow 0.6s cubic-bezier(0.3, 0.7, 0.2, 1), box-shadow 0.3s;
+    }
+    .panel[data-abierto] {
+      flex-grow: 1;
+      min-height: 0;
+    }
+    /* Pestaña cerrada: nombre en vertical arriba y año abajo, como en la referencia. */
+    .panel-pestana {
+      flex-direction: column;
+      align-items: center;
+      padding: 1.5rem 0 1.25rem;
+    }
+    .panel-pestana .panel-nombre {
+      writing-mode: vertical-rl;
+    }
+    .panel[data-abierto] .panel-cuerpo {
+      height: 100%;
+      padding: 2rem 2.25rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .panel {
+      transition: none;
+    }
   }
 
   /* ---------- Tocadiscos (RF-17, RF-22) ---------- */
@@ -234,6 +352,12 @@
   /* Reproductor (RF-28): fondo oscuro detrás del <dialog>. */
   .reproductor::backdrop {
     background: rgb(0 0 0 / 0.85);
+  }
+}
+
+@keyframes deriva {
+  to {
+    transform: translateX(-50%);
   }
 }
 
