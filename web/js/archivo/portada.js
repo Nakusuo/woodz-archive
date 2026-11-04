@@ -3,6 +3,7 @@
  * dos filas de clips en blanco y negro que se deslizan, con el título y los botones en medio.
  * Los clips salen solos de la pestaña Videos (primero los MVs), sin trabajo extra en la hoja.
  */
+import { idiomaActual } from '../idioma.js';
 import { reducirMovimiento } from '../comun.js';
 import { el, urlSegura } from '../seguro.js';
 import { infoYouTube, miniaturaYouTube } from '../youtube.js';
@@ -21,8 +22,11 @@ export function pintarPortada(filas, videos) {
       document.getElementById('portada-antetitulo').hidden = true;
       document.getElementById('portada-titulo').textContent = fila.titulo;
     }
-    if (fila.texto_boton_1) document.getElementById('boton-conoce').textContent = fila.texto_boton_1;
-    if (fila.texto_boton_2) document.getElementById('boton-moodzflix').textContent = fila.texto_boton_2;
+    // Botones: en inglés solo se usa la hoja si tiene Texto_Boton_1_EN; si no, el texto del diccionario.
+    const boton1 = idiomaActual() === 'en' ? fila.texto_boton_1_en : fila.texto_boton_1;
+    const boton2 = idiomaActual() === 'en' ? fila.texto_boton_2_en : fila.texto_boton_2;
+    if (boton1) document.getElementById('boton-conoce').textContent = boton1;
+    if (boton2) document.getElementById('boton-moodzflix').textContent = boton2;
   }
 
   pintarClips(videos);

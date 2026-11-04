@@ -1,6 +1,7 @@
 /**
  * Banner destacado (CU-06): póster o video de fondo, título, descripción y botones.
  */
+import { campo, t } from '../idioma.js';
 import { reducirMovimiento } from '../comun.js';
 import { icono } from '../iconos.js';
 import { el, urlSegura } from '../seguro.js';
@@ -32,20 +33,21 @@ export function pintarDestacado(filas) {
   titulo.replaceChildren(logo
     ? el('img', { src: logo, alt: fila.titulo, class: 'max-h-32 w-auto max-w-[80vw] object-contain sm:max-h-44' })
     : fila.titulo);
-  document.getElementById('destacado-descripcion').textContent = fila.descripcion || '';
+  document.getElementById('destacado-descripcion').textContent = campo(fila, 'descripcion');
 
   const botones = document.getElementById('destacado-botones');
   if (principal) {
     botones.append(el('button', {
       type: 'button', class: 'inline-flex min-h-12 items-center gap-2 rounded-full bg-texto px-7 font-semibold text-fondo transition hover:bg-white active:scale-[.98]',
       onclick: () => reproducir(fila.titulo, principal),
-    }, icono('play', 'size-5'), 'Reproducir'));
+    }, icono('play', 'size-5'), t('reproducir')));
   }
   const secundario = urlSegura(fila.url_boton_secundario);
-  if (secundario && fila.texto_boton_secundario) {
+  const textoSecundario = campo(fila, 'texto_boton_secundario');
+  if (secundario && textoSecundario) {
     botones.append(el('button', {
       type: 'button', class: 'inline-flex min-h-12 items-center gap-2 rounded-full bg-white/15 px-7 font-semibold transition hover:bg-white/25 active:scale-[.98]',
-      onclick: () => reproducir(fila.texto_boton_secundario, secundario),
-    }, fila.texto_boton_secundario));
+      onclick: () => reproducir(textoSecundario, secundario),
+    }, textoSecundario));
   }
 }

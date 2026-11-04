@@ -77,6 +77,7 @@
 |---|---|---|
 | RF-33 | Pie con aviso de sitio fan no oficial, créditos (`Creditos`) y año en curso, en las dos páginas. | M |
 | RF-34 | Todas las imágenes tienen imagen de reserva (una sola vez, sin bucles), `loading="lazy"` fuera de pantalla y `width`/`height`. | M |
+| RF-35 | La web sale en **inglés** y un botón de la cabecera la pasa a **español** (y vuelta). La elección se recuerda en el navegador. Los textos de la hoja usan la columna `<Nombre>_EN` en inglés si existe (ver `contenido/LEEME.md`). | M |
 
 ## 3. Requerimientos no funcionales (RNF)
 
