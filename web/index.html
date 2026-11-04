@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>WOODZ Archive</title>
+  <meta name="description" content="Archivo fan de WOODZ: su carrera etapa por etapa, su discografía en un tocadiscos y sus videos en MOODZFLIX.">
+  <meta name="theme-color" content="#0a0a0a">
+
+  <!-- Al compartir el enlace (RNF-17). Falta la imagen OG (fase 7). -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="WOODZ Archive">
+  <meta property="og:description" content="La carrera y la discografía de WOODZ, hecho por MOODZ.">
+  <meta property="og:locale" content="es_ES">
+
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script src="js/vendor/papaparse.min.js" defer></script>
+  <script type="module" src="js/archivo/main.js"></script>
+</head>
+<body class="min-h-dvh">
+  <a href="#historia" class="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-50 focus:rounded focus:bg-texto focus:px-4 focus:py-2 focus:text-fondo">
+    Saltar al contenido
+  </a>
+
+  <header id="cabecera" class="cabecera fixed inset-x-0 top-0 z-40">
+    <div class="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:h-16 sm:px-10">
+      <a href="#inicio" class="font-display text-lg uppercase tracking-wide sm:text-xl">WOODZ <span class="text-texto-suave">Archive</span></a>
+      <nav aria-label="Secciones" class="flex items-center gap-1 text-sm font-medium">
+        <a href="#historia" class="hidden rounded-full px-3 py-2 text-texto-suave transition hover:text-texto sm:block">Historia</a>
+        <a href="#discografia" class="hidden rounded-full px-3 py-2 text-texto-suave transition hover:text-texto sm:block">Discografía</a>
+        <a href="moodzflix.html" class="rounded-full border border-linea px-4 py-2 transition hover:border-texto">MOODZFLIX</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="overflow-x-clip">
+    <!-- Portada (RF-07 a RF-11) -->
+    <section id="inicio" class="relative isolate flex min-h-svh items-center justify-center overflow-hidden" aria-labelledby="portada-titulo">
+      <div class="blanco-negro absolute inset-0 -z-10" id="portada-medio">
+        <img id="portada-poster" alt="" width="1280" height="720" class="size-full object-cover opacity-0 transition-opacity duration-700">
+      </div>
+      <div class="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,transparent_25%,rgb(0_0_0/0.8)_100%)]"></div>
+      <div class="absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-t from-fondo to-transparent"></div>
+      <div class="grano absolute inset-0 -z-10"></div>
+
+      <div class="px-4 pt-14 text-center">
+        <p class="font-mono text-xs uppercase tracking-[0.3em] text-texto-suave">Archivo fan no oficial</p>
+        <h1 id="portada-titulo" class="mx-auto mt-5 max-w-5xl text-balance font-display text-[clamp(3.2rem,11vw,8.5rem)] uppercase leading-[0.92]">Welcome to WOODZ Archive</h1>
+        <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <a id="boton-conoce" href="#historia" class="inline-flex min-h-12 items-center rounded-full bg-acento px-7 font-semibold text-fondo transition hover:brightness-110 active:scale-[.98]">Conoce a WOODZ</a>
+          <a id="boton-moodzflix" href="moodzflix.html" class="inline-flex min-h-12 items-center rounded-full border border-texto/60 px-7 font-semibold transition hover:border-texto hover:bg-texto hover:text-fondo active:scale-[.98]">Ver MOODZFLIX</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Timeline (RF-12 a RF-14) -->
+    <section id="historia" class="scroll-mt-16 py-20 sm:py-28" aria-labelledby="historia-titulo">
+      <div class="mx-auto max-w-7xl px-4 sm:px-10">
+        <div class="flex items-end justify-between gap-6">
+          <div>
+            <p class="font-mono text-xs uppercase tracking-[0.3em] text-acento">Historia</p>
+            <h2 id="historia-titulo" class="mt-3 font-display text-5xl uppercase leading-none sm:text-6xl">Conoce a WOODZ</h2>
+            <p class="mt-3 max-w-md text-texto-suave">Su carrera, etapa por etapa. Toca una para ver más.</p>
+          </div>
+          <div class="hidden gap-2 sm:flex">
+            <button id="timeline-anterior" type="button" class="grid size-11 place-items-center rounded-full border border-linea transition hover:border-texto disabled:opacity-30 disabled:hover:border-linea" aria-label="Etapas anteriores"></button>
+            <button id="timeline-siguiente" type="button" class="grid size-11 place-items-center rounded-full border border-linea transition hover:border-texto disabled:opacity-30 disabled:hover:border-linea" aria-label="Etapas siguientes"></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="mx-auto mt-12 max-w-7xl">
+        <ol id="timeline" class="carril scroll-px-4 gap-5 px-4 sm:scroll-px-10 sm:px-10" aria-label="Etapas de su carrera">
+          <li class="esqueleto h-36 w-60 rounded-lg"></li>
+          <li class="esqueleto h-36 w-60 rounded-lg"></li>
+          <li class="esqueleto h-36 w-60 rounded-lg"></li>
+          <li class="esqueleto h-36 w-60 rounded-lg"></li>
+        </ol>
+      </div>
+
+      <div class="mx-auto max-w-7xl px-4 sm:px-10">
+        <div id="etapa-detalle" class="mt-8" role="region" aria-live="polite" hidden></div>
+      </div>
+    </section>
+
+    <!-- Music Vault (RF-16 a RF-22) -->
+    <section id="discografia" class="scroll-mt-14 border-t border-linea py-20 sm:py-16" aria-labelledby="discografia-titulo">
+      <div class="mx-auto max-w-7xl px-4 sm:px-10">
+        <div class="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
+          <div>
+            <p class="font-mono text-xs uppercase tracking-[0.3em] text-acento">Music Vault</p>
+            <h2 id="discografia-titulo" class="mt-3 font-display text-5xl uppercase leading-none sm:text-6xl">Discografía</h2>
+            <p class="mt-3 max-w-md text-texto-suave">Elige un disco para ponerlo en el tocadiscos.</p>
+          </div>
+          <div id="filtros" class="flex flex-wrap gap-2" hidden></div>
+        </div>
+
+        <div class="mt-8 grid gap-10 lg:grid-cols-[16rem_minmax(0,1fr)_20rem] lg:items-start lg:gap-12">
+          <ul id="discos" class="carril -mx-4 gap-3 px-4 lg:mx-0 lg:block lg:max-h-[30rem] lg:space-y-1 lg:overflow-y-auto lg:px-0 lg:pr-2" aria-label="Lanzamientos">
+            <li class="esqueleto h-16 w-56 rounded-lg lg:w-full"></li>
+            <li class="esqueleto h-16 w-56 rounded-lg lg:w-full"></li>
+            <li class="esqueleto h-16 w-56 rounded-lg lg:w-full"></li>
+          </ul>
+
+          <div id="tocadiscos" class="order-first lg:order-none">
+            <div id="plato" class="plato">
+              <div class="vinilo"></div>
+              <div id="vinilo-etiqueta" class="vinilo-etiqueta grid place-items-center">
+                <span class="px-3 text-center font-mono text-[0.6rem] uppercase leading-tight tracking-widest text-texto-suave sm:text-xs">Elige un disco</span>
+              </div>
+              <div class="vinilo-brillo"></div>
+              <svg class="brazo" viewBox="0 0 100 160" aria-hidden="true">
+                <circle cx="78" cy="19" r="15" fill="#1e1e1e" stroke="#3a3a3a" stroke-width="2" />
+                <circle cx="78" cy="19" r="5" fill="#a19e97" />
+                <path d="M78 19 L60 70 L44 128" fill="none" stroke="#c9c6bf" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+                <rect x="34" y="124" width="16" height="26" rx="3" transform="rotate(18 42 137)" fill="#c9c6bf" />
+              </svg>
+            </div>
+          </div>
+
+          <div id="disco-info" aria-live="polite">
+            <p class="text-texto-suave">Aquí aparecen las canciones del disco que elijas.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Redes (RF-15) -->
+    <section id="redes" class="border-t border-linea py-14" aria-labelledby="redes-titulo" hidden>
+      <div class="mx-auto flex max-w-7xl flex-col gap-5 px-4 sm:flex-row sm:items-center sm:justify-between sm:px-10">
+        <h2 id="redes-titulo" class="font-display text-3xl uppercase">Sigue a WOODZ</h2>
+        <ul id="redes-lista" class="flex flex-wrap gap-2"></ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- Pie (RF-23, RF-33) -->
+  <footer class="border-t border-linea">
+    <div class="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-12 sm:flex-row sm:items-end sm:justify-between sm:px-10">
+      <div class="max-w-xl space-y-3 text-sm text-texto-suave">
+        <p class="font-display text-xl uppercase text-texto">WOODZ Archive</p>
+        <p>Sitio hecho por fans. No es oficial ni tiene relación con WOODZ ni con su agencia. Los videos y la música pertenecen a sus dueños.</p>
+        <div data-creditos>
+          <span>Créditos: </span><ul id="creditos" class="inline [&>li]:inline [&>li+li]:before:content-[',_']"></ul>
+        </div>
+        <p>© <span data-anio></span> MOODZ</p>
+      </div>
+      <a href="#inicio" class="inline-flex min-h-12 items-center gap-2 self-start rounded-full border border-linea px-6 font-semibold transition hover:border-texto sm:self-auto" id="volver-inicio">
+        Volver al inicio
+      </a>
+    </div>
+  </footer>
+
+  <noscript>
+    <p class="fixed inset-x-0 bottom-0 bg-acento p-3 text-center text-fondo">Esta web necesita JavaScript para mostrar la historia y la discografía.</p>
+  </noscript>
+</body>
+</html>
