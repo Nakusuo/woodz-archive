@@ -72,6 +72,13 @@ export function pintarDiscografia(lanzamientos, canciones, reintentar) {
   const etiqueta = document.getElementById('vinilo-etiqueta');
   const marcha = document.getElementById('plato-boton');
   lista.removeAttribute('aria-busy');
+  etiqueta.removeAttribute('data-cargando');
+  // Fuera el relleno de carga: aviso de "elige un disco" hasta que se elija uno.
+  if (!info.dataset.listo) {
+    info.dataset.listo = 'si';
+    info.replaceChildren(el('p', { class: 'text-texto-suave', texto: t('discoInfo') }));
+  }
+  document.getElementById('filtros').hidden = true;
 
   const discos = (lanzamientos || [])
     .filter((d) => d.titulo)
