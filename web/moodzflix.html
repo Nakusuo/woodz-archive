@@ -1,42 +1,54 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-pagina="moodzflix">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>MOODZFLIX</title>
-  <meta name="description" content="MOODZFLIX: all the WOODZ videos in one place. Music videos, live clips, stages and vlogs.">
-  <meta name="theme-color" content="#0a0a0a">
+  <title>MOODZFLIX: all the WOODZ videos</title>
+  <meta name="description" content="MOODZFLIX: all the WOODZ videos in one place, with search. Music videos, live clips, stages and vlogs. Unofficial fan project.">
+  <meta name="theme-color" content="#060b18">
+  <link rel="canonical" href="https://nakusuo.github.io/woodz-archive/moodzflix.html">
 
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="WOODZ Archive">
   <meta property="og:title" content="MOODZFLIX">
-  <meta property="og:description" content="All the WOODZ videos in one place, made by MOODZ.">
+  <meta property="og:description" content="All the WOODZ videos in one place, made by MOODZ. Unofficial fan project.">
+  <meta property="og:url" content="https://nakusuo.github.io/woodz-archive/moodzflix.html">
+  <meta property="og:image" content="https://nakusuo.github.io/woodz-archive/img/og-moodzflix.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="MOODZFLIX, the WOODZ videos">
   <meta property="og:locale" content="en_US">
   <meta property="og:locale:alternate" content="es_ES">
+  <meta name="twitter:card" content="summary_large_image">
 
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap">
   <link rel="stylesheet" href="css/styles.css?v=dev">
 
   <script src="js/vendor/papaparse.min.js" defer></script>
   <script type="module" src="js/moodzflix/main.js?v=dev"></script>
 </head>
 <body class="min-h-dvh">
-  <a href="#filas" class="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-50 focus:rounded focus:bg-texto focus:px-4 focus:py-2 focus:text-fondo" data-t="saltarVideos">Skip to videos</a>
+  <a href="#buscador" class="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-50 focus:rounded focus:bg-texto focus:px-4 focus:py-2 focus:text-fondo" data-t="saltarVideos">Skip to videos</a>
 
-  <!-- Cabecera (RF-24) -->
+  <!-- Cabecera común a las dos páginas (RF-24) -->
   <header id="cabecera" class="cabecera fixed inset-x-0 top-0 z-40">
-    <div class="flex h-14 items-center justify-between gap-4 px-4 sm:h-16 sm:px-10">
-      <a href="#" class="shrink-0 text-xl font-extrabold tracking-tight sm:text-2xl">MOODZFLIX</a>
-      <nav id="navegacion" aria-label="Categories" data-t-aria="categorias" class="hidden min-w-0 items-center gap-1 overflow-x-auto rounded-full bg-superficie p-1 text-sm font-medium [scrollbar-width:none] lg:flex [&::-webkit-scrollbar]:hidden"></nav>
-      <div class="flex shrink-0 items-center gap-1 whitespace-nowrap">
-        <a href="index.html" class="inline-flex min-h-10 items-center gap-2 rounded-full px-3 text-sm font-medium text-texto-suave transition hover:text-texto">
-        <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
-        WOODZ Archive
-      </a>
-      <button id="boton-idioma" type="button" class="min-h-10 rounded-full px-3 text-sm font-medium text-texto-suave transition hover:text-texto">Español</button>
+    <div class="flex h-14 items-center justify-between gap-3 px-4 sm:h-16 sm:px-10">
+      <a href="#" class="shrink-0 font-display text-sm font-bold uppercase tracking-[0.2em] sm:text-base sm:tracking-[0.25em]">MOODZ<span class="text-naranja">FLIX</span></a>
+      <nav id="navegacion" aria-label="Categories" data-t-aria="categorias" class="hidden min-w-0 items-center gap-1 overflow-x-auto rounded-full bg-superficie/80 p-1 text-sm font-medium [scrollbar-width:none] 2xl:flex [&::-webkit-scrollbar]:hidden"></nav>
+      <div class="flex shrink-0 items-center gap-1">
+        <button id="boton-buscar" type="button" class="inline-flex min-h-10 items-center gap-2 rounded-full px-3 text-sm font-medium text-texto-suave transition hover:text-naranja" aria-controls="buscar" aria-keyshortcuts="/ Control+K">
+          <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <span class="max-sm:sr-only" data-t="buscar">Search</span>
+        </button>
+        <nav class="sitio" aria-label="Site" data-t-aria="sitio">
+          <a href="index.html">Archive</a>
+          <a href="moodzflix.html" aria-current="page" class="max-sm:hidden">MOODZFLIX</a>
+        </nav>
+        <button id="boton-idioma" type="button" class="min-h-10 rounded-full px-3 text-sm font-medium text-texto-suave transition hover:text-naranja">Español</button>
       </div>
     </div>
   </header>
@@ -46,24 +58,62 @@
     <section id="destacado" class="relative isolate flex h-[78svh] min-h-[32rem] max-h-[56rem] items-end overflow-hidden" aria-labelledby="destacado-titulo">
       <div id="destacado-medio" class="absolute inset-0 -z-10 bg-superficie"></div>
       <div class="absolute inset-0 -z-10 bg-gradient-to-r from-fondo/90 via-fondo/30 to-transparent"></div>
+      <div class="absolute inset-0 -z-10 bg-[radial-gradient(60%_60%_at_0%_75%,color-mix(in_srgb,var(--color-azul)_35%,transparent),transparent_70%)]"></div>
       <div class="absolute inset-x-0 bottom-0 -z-10 h-2/3 bg-gradient-to-t from-fondo via-fondo/60 to-transparent"></div>
 
-      <div class="w-full px-4 pb-28 sm:px-10 sm:pb-36">
+      <div class="w-full px-4 pb-40 sm:px-10 sm:pb-44">
         <div id="destacado-texto">
-        <p class="text-sm font-semibold text-texto-suave" data-t="loMasNuevo">Latest</p>
-        <h1 id="destacado-titulo" class="mt-2 max-w-3xl text-balance text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl">
-          <span class="esqueleto inline-block h-[1em] w-72 rounded-md align-middle"></span>
-        </h1>
-        <p id="destacado-descripcion" class="mt-3 max-w-xl text-texto/80 sm:text-lg"></p>
-        <div id="destacado-botones" class="mt-6 flex flex-wrap gap-3"></div>
+          <p class="antetitulo" data-t="loMasNuevo">Latest</p>
+          <h1 id="destacado-titulo" class="mt-2 max-w-3xl text-balance font-display text-3xl font-bold uppercase leading-[1.05] tracking-[0.04em] sm:text-5xl">
+            <span class="esqueleto inline-block h-[1em] w-72 rounded-md align-middle"></span>
+          </h1>
+          <p id="destacado-descripcion" class="mt-3 max-w-xl text-texto/80 sm:text-lg"></p>
+          <div id="destacado-botones" class="mt-6 flex flex-wrap gap-3"></div>
         </div>
         <!-- Carrusel: un punto por diapositiva -->
         <div id="destacado-puntos" class="mt-8 flex gap-2" hidden></div>
       </div>
     </section>
 
+    <!-- Buscador (solo en MOODZFLIX): título, álbum, año y categoría, en tiempo real -->
+    <section id="buscador" role="search" aria-label="Search videos" data-t-aria="buscarVideos" class="relative z-20 -mt-28 scroll-mt-20 px-4 sm:-mt-32 sm:px-10">
+      <div class="flex flex-col gap-3 lg:flex-row lg:items-center">
+        <div class="buscador-campo w-full lg:max-w-md">
+          <svg viewBox="0 0 24 24" class="ml-4 size-5 shrink-0 text-texto-suave" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <label for="buscar" class="sr-only" data-t="buscarVideos">Search videos</label>
+          <input id="buscar" type="search" name="q" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"
+            placeholder="Title, album, year or category" data-t-placeholder="buscarPista"
+            aria-controls="resultados" aria-describedby="buscar-ayuda" aria-keyshortcuts="/ Control+K">
+          <kbd class="mr-4 hidden shrink-0 rounded border border-linea px-1.5 font-mono text-xs text-texto-suave sm:inline" aria-hidden="true">/</kbd>
+          <button id="buscar-limpiar" type="button" class="mr-1.5 grid size-10 shrink-0 place-items-center rounded-full text-texto-suave transition hover:bg-superficie-alta hover:text-naranja" aria-label="Clear search" data-t-aria="limpiar" hidden>
+            <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+        </div>
+        <div class="flex min-w-0 items-center gap-2">
+          <div id="filtro-categorias" class="carril min-w-0 flex-1 gap-2 [mask-image:linear-gradient(90deg,#000_90%,transparent)]" role="group" aria-label="Filter by category" data-t-aria="filtroCategoria"></div>
+          <label for="filtro-anio" class="sr-only" data-t="filtroAnio">Filter by year</label>
+          <select id="filtro-anio" class="selector shrink-0" hidden></select>
+        </div>
+      </div>
+      <p id="buscar-ayuda" class="sr-only" data-t="buscarAyuda">Results update as you type. Press slash or Control K to jump here.</p>
+      <p id="buscar-estado" class="sr-only" aria-live="polite"></p>
+    </section>
+
+    <!-- Resultados de la búsqueda (sustituyen a las filas mientras hay búsqueda o filtro) -->
+    <section id="resultados" class="relative z-10 px-4 pb-16 pt-8 sm:px-10" aria-labelledby="resultados-titulo" hidden>
+      <h2 id="resultados-titulo" class="text-lg font-semibold tracking-tight sm:text-xl"></h2>
+      <ul id="resultados-lista" class="mt-4 grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5"></ul>
+      <div id="resultados-vacio" class="mt-2 max-w-xl" hidden></div>
+    </section>
+
     <!-- Filas (RF-26, RF-27) -->
-    <div id="filas" class="relative z-10 -mt-20 space-y-8 pb-16 sm:-mt-28 sm:space-y-10">
+    <div id="filas" class="relative z-10 space-y-8 pb-16 pt-8 sm:space-y-10" aria-busy="true">
+      <div class="flex gap-4 overflow-hidden px-4 sm:px-10" aria-hidden="true">
+        <div class="esqueleto aspect-video w-[70vw] shrink-0 rounded-xl sm:w-80"></div>
+        <div class="esqueleto aspect-video w-[70vw] shrink-0 rounded-xl sm:w-80"></div>
+        <div class="esqueleto aspect-video w-[70vw] shrink-0 rounded-xl sm:w-80"></div>
+        <div class="esqueleto aspect-video w-[70vw] shrink-0 rounded-xl sm:w-80"></div>
+      </div>
       <div class="flex gap-4 overflow-hidden px-4 sm:px-10" aria-hidden="true">
         <div class="esqueleto aspect-video w-[70vw] shrink-0 rounded-xl sm:w-80"></div>
         <div class="esqueleto aspect-video w-[70vw] shrink-0 rounded-xl sm:w-80"></div>
@@ -71,38 +121,43 @@
         <div class="esqueleto aspect-video w-[70vw] shrink-0 rounded-xl sm:w-80"></div>
       </div>
     </div>
+
+    <!-- Sin JavaScript: lista de videos sacada de la hoja al publicar (tools/prerender.mjs) -->
+    <noscript>
+      <div class="px-4 pb-16 sm:px-10">
+        <p class="rounded-xl bg-superficie p-4 text-texto-suave">MOODZFLIX works best with JavaScript. / MOODZFLIX funciona mejor con JavaScript.</p>
+        <!-- prerender:moodzflix -->
+      </div>
+    </noscript>
   </main>
 
   <!-- Pie (RF-33) -->
   <footer class="border-t border-linea">
-    <div class="flex flex-col gap-3 px-4 py-10 text-sm text-texto-suave sm:px-10">
-      <p class="text-base font-extrabold tracking-tight text-texto">MOODZFLIX</p>
-      <p class="max-w-xl" data-t="avisoFlix">Made by fans. Not official and not affiliated with WOODZ or WOODZ's agency. Videos play from YouTube and belong to their owners.</p>
-      <div data-creditos>
-        <span data-t="creditos">Credits: </span><ul id="creditos" class="inline [&>li]:inline [&>li+li]:before:content-[',_']"></ul>
+    <div class="flex flex-col gap-8 px-4 py-10 sm:flex-row sm:items-end sm:justify-between sm:px-10">
+      <div class="flex max-w-xl flex-col gap-3 text-sm text-texto-suave">
+        <p class="font-display text-base font-bold uppercase tracking-[0.25em] text-texto">MOODZ<span class="text-naranja">FLIX</span></p>
+        <p data-t="avisoFlix">Made by fans. Not official and not affiliated with WOODZ or WOODZ's agency. Videos play from YouTube and belong to their owners.</p>
+        <div data-creditos>
+          <span data-t="creditos">Credits: </span><ul id="creditos" class="inline [&>li]:inline [&>li+li]:before:content-[',_']"></ul>
+        </div>
+        <p>© <span data-anio></span> MOODZ</p>
       </div>
-      <p>© <span data-anio></span> MOODZ</p>
+      <a href="index.html" class="boton boton-secundario self-start sm:self-auto" data-t="irArchivo">Go to WOODZ Archive</a>
     </div>
   </footer>
 
-  <!-- Reproductor (RF-28, RF-29) -->
+  <!-- Reproductor (RF-28, RF-29): el iframe de YouTube se crea solo al pulsar un video -->
   <dialog id="reproductor" class="reproductor m-auto w-[min(64rem,calc(100vw-2rem),calc((100dvh-8rem)*16/9))] max-w-none overflow-visible bg-transparent p-0 text-texto" aria-labelledby="reproductor-titulo">
-    <div class="overflow-hidden rounded-2xl bg-superficie shadow-2xl">
-      <div class="relative aspect-video bg-black">
-        <iframe id="reproductor-video" class="absolute inset-0 size-full" title="Video player" data-t-titulo="reproductor" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
-      </div>
+    <div class="overflow-hidden rounded-2xl bg-superficie shadow-2xl shadow-azul/30 ring-1 ring-linea">
+      <div id="reproductor-marco" class="relative aspect-video bg-black"></div>
       <div class="flex flex-wrap items-center justify-between gap-3 p-4 sm:px-6">
         <h2 id="reproductor-titulo" class="min-w-0 flex-1 text-lg font-semibold"></h2>
         <div class="flex gap-2">
-          <a id="reproductor-youtube" target="_blank" rel="noopener" class="inline-flex min-h-11 items-center gap-2 rounded-full bg-white/10 px-5 text-sm font-semibold transition hover:bg-white/20" data-t="verYoutube">Watch on YouTube</a>
-          <button id="reproductor-cerrar" type="button" class="inline-flex min-h-11 items-center rounded-full bg-texto px-5 text-sm font-semibold text-fondo transition hover:bg-white" data-t="cerrar">Close</button>
+          <a id="reproductor-youtube" target="_blank" rel="noopener" class="boton boton-secundario" data-t="verYoutube">Watch on YouTube</a>
+          <button id="reproductor-cerrar" type="button" class="boton boton-principal" data-t="cerrar">Close</button>
         </div>
       </div>
     </div>
   </dialog>
-
-  <noscript>
-    <p class="fixed inset-x-0 bottom-0 bg-acento p-3 text-center text-fondo">MOODZFLIX needs JavaScript. / MOODZFLIX necesita JavaScript.</p>
-  </noscript>
 </body>
 </html>

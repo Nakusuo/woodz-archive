@@ -7,7 +7,7 @@ import { reducirMovimiento } from '../comun.js';
 import { icono } from '../iconos.js';
 import { campo, t } from '../idioma.js';
 import { el, urlSegura } from '../seguro.js';
-import { infoYouTube, miniaturaGrande, miniaturaYouTube } from '../youtube.js';
+import { infoYouTube, miniaturaGrande, miniaturaYouTube, ponerPortadaLista } from '../youtube.js';
 import { reproducir } from './reproductor.js';
 
 const INTERVALO_MS = 8000;
@@ -35,6 +35,9 @@ function capa(fila) {
   }
   const { src, reserva } = fondoDe(fila);
   const img = el('img', { src: src || null, alt: '', width: 1280, height: 720, class: 'absolute inset-0 size-full object-cover opacity-0 transition-opacity duration-1000' });
+  // Sin póster y con una lista de YouTube en el botón: la portada de la lista.
+  const yt = infoYouTube(urlSegura(fila.url_boton_principal));
+  if (!src && yt?.tipo === 'lista') ponerPortadaLista(img, yt.id);
   // YouTube responde con una imagen gris de 120×90 si un video no tiene miniatura grande.
   if (reserva) img.addEventListener('load', () => { if (img.naturalWidth <= 120) img.src = reserva; });
   return img;
@@ -70,7 +73,7 @@ export function pintarDestacado(filas) {
 
     const logo = urlSegura(fila.url_logo);
     titulo.replaceChildren(logo
-      ? el('img', { src: logo, alt: fila.titulo, class: 'max-h-32 w-auto max-w-[80vw] object-contain sm:max-h-44' })
+      ? el('img', { src: logo, alt: campo(fila, 'titulo'), class: 'max-h-32 w-auto max-w-[80vw] object-contain sm:max-h-44' })
       : fila.titulo);
     // Los títulos largos (programas de TV) bajan de tamaño para no ocupar media pantalla.
     titulo.classList.toggle('text-largo', fila.titulo.length > 32);
@@ -81,11 +84,11 @@ export function pintarDestacado(filas) {
     const textoSecundario = campo(fila, 'texto_boton_secundario');
     botones.replaceChildren(
       principal && el('button', {
-        type: 'button', class: 'inline-flex min-h-12 items-center gap-2 rounded-full bg-texto px-7 font-semibold text-fondo transition hover:bg-white active:scale-[.98]',
+        type: 'button', class: 'boton boton-principal min-h-12 px-7 text-base',
         onclick: () => reproducir(fila.titulo, principal),
       }, icono('play', 'size-5'), t('reproducir')),
       secundario && textoSecundario && el('button', {
-        type: 'button', class: 'inline-flex min-h-12 items-center gap-2 rounded-full bg-white/15 px-7 font-semibold transition hover:bg-white/25 active:scale-[.98]',
+        type: 'button', class: 'boton boton-secundario min-h-12 px-7 text-base',
         onclick: () => reproducir(textoSecundario, secundario),
       }, textoSecundario),
     );
@@ -103,7 +106,7 @@ export function pintarDestacado(filas) {
   if (diapositivas.length > 1) {
     puntos.replaceChildren(...diapositivas.map((fila, i) => el('button', {
       type: 'button', 'aria-label': fila.titulo, 'aria-current': 'false',
-      class: 'h-1.5 w-6 rounded-full bg-white/30 transition-all duration-300 hover:bg-white/60 aria-[current=true]:w-10 aria-[current=true]:bg-white',
+      class: 'h-1.5 w-6 rounded-full bg-white/30 transition-all duration-300 hover:bg-white/60 aria-[current=true]:w-10 aria-[current=true]:bg-naranja',
       onclick: () => { mostrar(i); reiniciar(); },
     })));
     puntos.hidden = false;

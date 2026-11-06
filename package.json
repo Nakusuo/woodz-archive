@@ -1,6 +1,6 @@
 {
   "name": "woodz-archive",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "WOODZ Archive y MOODZFLIX: sitio fan de WOODZ, estático, con el contenido en Google Sheets.",
   "type": "module",
@@ -9,7 +9,8 @@
     "dev:css": "tailwindcss -i src/styles.css -o web/css/styles.css --watch",
     "dev:web": "python3 -m http.server 5510 --directory web",
     "dev": "npm run build && (npm run dev:css & npm run dev:web)",
-    "hoja": "node tools/hoja.mjs"
+    "hoja": "node tools/hoja.mjs",
+    "prerender": "node tools/prerender.mjs"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.4",

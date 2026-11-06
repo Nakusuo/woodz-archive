@@ -28,3 +28,12 @@ La web sale en **inglés** y tiene un botón para pasarla a **español**.
   - `Destacado`: `Descripcion_EN`, `Texto_Boton_Secundario_EN`.
   - `Portada`: `Texto_Boton_1_EN`, `Texto_Boton_2_EN` (si no existen, en inglés se usan "Meet WOODZ" y "Watch MOODZFLIX").
 - Si falta la columna `_EN`, en inglés se muestra el texto en español.
+
+## Buscador de MOODZFLIX (2026-11-05)
+
+El buscador usa la pestaña `Videos` tal como está: **no hay que cambiar la hoja**.
+
+- Busca por título, categoría, álbum y año, sin importar mayúsculas ni acentos.
+- El álbum y el año se deducen solos de `Canciones` y `Lanzamientos` (mismo video de YouTube o el título del video empieza por el nombre de la canción). El año también se toma del título si lo trae (por ejemplo, "2025 WOODZ PREVIEW CONCERT").
+- Si algún video sale con el álbum o el año mal, se puede corregir añadiendo a `Videos` las columnas opcionales `Album` y `Anio`: si existen, mandan sobre lo deducido.
+- Las listas de reproducción de YouTube muestran su portada sola; `URL_Miniatura` sigue sirviendo para poner otra.

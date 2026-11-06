@@ -5,8 +5,12 @@
  *  1. La URL CSV publicada de Google Sheets (config.js), si existe.
  *  2. Si no hay URL, la copia local web/datos/<Pestaña>.csv (sale de contenido/).
  *  3. Si la petición falla, la última copia guardada en este navegador (localStorage).
+ *
+ * Caché: si la última carga correcta tiene menos de COPIA_FRESCA_MS, la página abre al momento
+ * con ella y pide la hoja por detrás para la próxima visita. Así abre rápido y, aun así,
+ * lo que se cambie en la hoja aparece sin tocar el código.
  */
-import { HOJAS, TIEMPO_ESPERA_MS } from './config.js';
+import { COPIA_FRESCA_MS, HOJAS, TIEMPO_ESPERA_MS } from './config.js';
 
 const NOMBRES = {
   portada: 'Portada', etapas: 'Etapas', lanzamientos: 'Lanzamientos', canciones: 'Canciones',
@@ -39,7 +43,10 @@ async function pedir(url) {
 function parsear(texto) {
   const { data } = window.Papa.parse(texto, { header: true, skipEmptyLines: 'greedy', transformHeader: normalizar });
   const filas = data
-    .map((fila) => Object.fromEntries(Object.entries(fila).map(([k, v]) => [k, (v ?? '').trim()])))
+    .map((fila) => Object.fromEntries(Object.entries(fila)
+      .filter(([k]) => k && k !== '__parsed_extra') // columnas sin nombre o celdas de más
+      .map(([k, v]) => [k, String(v ?? '').trim()])))
+    .filter((fila) => Object.values(fila).some(Boolean)) // filas vacías
     .filter((fila) => normalizar(fila.activo || 'si') !== 'no'); // RF-03
   // Orden estable: las filas sin número quedan en el orden de la hoja.
   return filas
@@ -54,25 +61,39 @@ function guardarCopia(clave, filas) {
   } catch { /* sin almacenamiento disponible: no pasa nada */ }
 }
 
+/** { fecha, filas } de la última carga correcta en este navegador, o null. */
 function leerCopia(clave) {
   try {
-    return JSON.parse(localStorage.getItem(`woodz:${clave}`))?.filas ?? null;
+    const copia = JSON.parse(localStorage.getItem(`woodz:${clave}`));
+    return Array.isArray(copia?.filas) ? copia : null;
   } catch {
     return null;
   }
 }
 
-async function cargarPestana(clave) {
+/** Pide la pestaña a la hoja y guarda la copia, sin esperar (para la próxima visita). */
+function refrescarPorDetras(clave, url) {
+  pedir(url).then((texto) => guardarCopia(clave, parsear(texto))).catch(() => { /* ya se usó la copia */ });
+}
+
+async function cargarPestana(clave, { forzar = false } = {}) {
   const nombre = NOMBRES[clave];
   const local = `datos/${nombre}.csv`;
   const url = HOJAS[clave] || local;
+
+  const reciente = !forzar && leerCopia(clave);
+  if (reciente && Date.now() - reciente.fecha < COPIA_FRESCA_MS) {
+    refrescarPorDetras(clave, url);
+    return reciente.filas;
+  }
+
   try {
     const filas = parsear(await pedir(url));
     guardarCopia(clave, filas);
     return filas;
   } catch (error) {
     // 1º la última copia de este navegador; 2º la copia que va con la web (npm run hoja).
-    const copia = leerCopia(clave);
+    const copia = leerCopia(clave)?.filas;
     if (copia) {
       console.warn(`[WOODZ] No se pudo leer "${nombre}" (${error.message}). Uso la última copia guardada.`);
       return copia;
@@ -88,9 +109,12 @@ async function cargarPestana(clave) {
   }
 }
 
-/** cargar(['etapas', 'videos']) → { etapas: [...], videos: [...] }. Una pestaña que falló vale null (RF-04). */
-export async function cargar(claves) {
-  const resultados = await Promise.all(claves.map(cargarPestana));
+/**
+ * cargar(['etapas', 'videos']) → { etapas: [...], videos: [...] }. Una pestaña que falló vale null (RF-04).
+ * Con { forzar: true } (botón "Reintentar") no usa la copia reciente y vuelve a pedir la hoja.
+ */
+export async function cargar(claves, opciones) {
+  const resultados = await Promise.all(claves.map((c) => cargarPestana(c, opciones)));
   const datos = Object.fromEntries(claves.map((c, i) => [c, resultados[i]]));
   console.info('[WOODZ] Datos cargados:', Object.fromEntries(claves.map((c) => [c, datos[c]?.length ?? 'error'])));
   return datos;

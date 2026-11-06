@@ -19,11 +19,11 @@ export function pintarRedes(redes) {
 
   document.getElementById('redes-lista').replaceChildren(...grupos.map(([titulo, lista]) =>
     el('div', {},
-      el('h3', { class: 'font-mono text-xs uppercase tracking-[0.3em] text-texto-suave', texto: titulo }),
+      el('h3', { class: 'antetitulo', texto: titulo }),
       el('ul', { class: 'mt-3 flex flex-wrap gap-2' }, lista.map((r) =>
         el('li', {}, el('a', {
           href: urlSegura(r.url), target: '_blank', rel: 'noopener',
-          class: 'inline-flex min-h-11 items-center gap-2 rounded-full border border-linea px-5 text-sm font-semibold transition hover:border-texto',
+          class: 'boton boton-secundario',
         }, icono(ICONOS[r.icono] || 'web', 'size-4'), r.nombre)))))));
   document.getElementById('redes').hidden = false;
 }
