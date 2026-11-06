@@ -52,12 +52,20 @@ export function pintarDestacado(filas) {
   const puntos = document.getElementById('destacado-puntos');
 
   const diapositivas = (filas || []).filter((f) => f.titulo);
+  // El relleno de carga del fondo se quita en cuanto llega la primera imagen.
+  const quitarRelleno = () => medio.classList.remove('esqueleto');
   if (!diapositivas.length) {
+    quitarRelleno();
     titulo.textContent = 'MOODZFLIX';
     return;
   }
 
   const capas = diapositivas.map(capa);
+  capas.forEach((c) => {
+    c.addEventListener('load', quitarRelleno, { once: true });
+    c.addEventListener('loadeddata', quitarRelleno, { once: true });
+  });
+  setTimeout(quitarRelleno, 8000); // si la imagen no llega nunca, no dejar el brillo para siempre
   medio.replaceChildren(...capas);
 
   let actual = -1;
