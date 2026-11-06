@@ -85,8 +85,7 @@ function fila(grupo, nombre, videos) {
 
   const id = ancla(grupo);
   return el('section', { id, class: 'group/f scroll-mt-20', 'aria-labelledby': `${id}-titulo`, 'data-aparecer': '' },
-    el('h2', { id: `${id}-titulo`, class: 'mb-1 flex items-baseline gap-3 px-4 text-lg font-semibold tracking-tight sm:px-10 sm:text-xl' },
-      nombre, el('span', { class: 'font-mono text-xs font-normal text-texto-suave', texto: String(videos.length) })),
+    el('h2', { id: `${id}-titulo`, class: 'mb-1 px-4 text-lg font-semibold tracking-tight sm:px-10 sm:text-xl', texto: nombre }),
     el('div', { class: 'relative' }, izq, pista, der));
 }
 
