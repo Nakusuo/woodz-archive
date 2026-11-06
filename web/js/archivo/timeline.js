@@ -4,16 +4,17 @@
  * En móvil los paneles van uno debajo de otro.
  */
 import { campo, t } from '../idioma.js';
-import { mensaje } from '../comun.js';
+import { mensaje, mensajeError } from '../comun.js';
 import { icono } from '../iconos.js';
 import { el, urlSegura } from '../seguro.js';
 
-export function pintarTimeline(etapas) {
+export function pintarTimeline(etapas, reintentar) {
   const lista = document.getElementById('timeline');
   const filas = (etapas || []).filter((e) => e.nombre);
+  lista.removeAttribute('aria-busy');
 
   if (!filas.length) {
-    lista.replaceChildren(el('li', {}, mensaje(etapas ? t('sinEtapas') : t('errorEtapas'))));
+    lista.replaceChildren(el('li', { class: 'md:flex-1' }, etapas ? mensaje(t('sinEtapas')) : mensajeError(t('errorEtapas'), reintentar)));
     return;
   }
 
@@ -59,21 +60,21 @@ function panel(etapa, i, total) {
     // Cada panel con el brillo en otro sitio, como las superficies de la referencia.
     style: `--luz: ${Math.round(20 + (60 * i) / Math.max(1, total - 1))}%`,
   },
-  foto && el('img', { src: foto, alt: '', loading: 'lazy', class: 'panel-foto' }),
+  foto && el('img', { src: foto, alt: etapa.nombre, loading: 'lazy', decoding: 'async', class: 'panel-foto' }),
   el('button', {
     type: 'button', class: 'panel-pestana group', 'aria-expanded': 'false', 'aria-controls': id,
     'aria-label': `${etapa.nombre}, ${anio}`,
   },
-  el('span', { class: 'panel-nombre font-display text-base font-semibold uppercase tracking-[0.12em] transition group-hover:text-acento', texto: etapa.nombre }),
-  el('span', { class: `font-mono text-xs ${etapa.anio ? 'text-acento' : 'text-texto-suave'}`, texto: etapa.anio || '—' })),
+  el('span', { class: 'panel-nombre font-display text-base font-semibold uppercase tracking-[0.12em] transition group-hover:text-naranja', texto: etapa.nombre }),
+  el('span', { class: `font-mono text-xs ${etapa.anio ? 'text-naranja' : 'text-texto-suave'}`, texto: etapa.anio || '?' })),
   el('div', { id, class: 'panel-cuerpo', role: 'region', 'aria-label': etapa.nombre },
-    el('p', { class: 'font-mono text-sm text-acento', texto: anio }),
+    el('p', { class: 'font-mono text-sm text-naranja', texto: anio }),
     el('h3', { class: 'mt-2 font-display text-3xl font-semibold uppercase leading-none tracking-[0.08em] sm:text-5xl', texto: etapa.nombre }),
     resumen && el('p', { class: 'mt-3 text-texto-suave', texto: resumen }),
     texto
       ? el('p', { class: 'mt-4 max-w-xl whitespace-pre-line text-sm leading-relaxed text-texto/90 sm:text-base', texto })
       : el('p', { class: 'mt-4 max-w-md text-sm text-texto-suave', texto: t('fichaPendiente') }),
     enlaces.length > 0 && el('div', { class: 'mt-5 flex flex-wrap gap-2' }, enlaces.map((e) =>
-      el('a', { href: e.url, target: '_blank', rel: 'noopener', class: 'inline-flex min-h-11 items-center gap-2 rounded-full border border-texto/30 bg-black/30 px-5 text-sm font-semibold transition hover:border-texto' },
+      el('a', { href: e.url, target: '_blank', rel: 'noopener', class: 'boton boton-secundario' },
         e.texto, icono('externo', 'size-4'))))));
 }

@@ -29,5 +29,11 @@ export const HOJAS = Object.fromEntries(
 /** Tiempo máximo de espera por pestaña antes de usar una copia (CU-01, 2a). */
 export const TIEMPO_ESPERA_MS = 8000;
 
+/**
+ * Si la última carga correcta guardada en el navegador es más reciente que esto, la página
+ * abre con ella al momento y actualiza la copia por detrás (la siguiente visita ya trae lo nuevo).
+ */
+export const COPIA_FRESCA_MS = 3 * 60 * 1000;
+
 /** Imagen de reserva para cualquier <img> que falle (RF-34). */
 export const IMAGEN_RESERVA = 'img/placeholder.svg';

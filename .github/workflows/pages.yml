@@ -27,6 +27,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build # copia datos y PapaParse a web/ y compila Tailwind
+      - run: npm run prerender # contenido de la hoja en el HTML para leer sin JavaScript
       # Versión en cada archivo (?v=<commit>): el navegador descarga los estilos y el código nuevos
       # en vez de mezclar la página nueva con la copia vieja que guarda 10 minutos.
       - name: Poner versión a CSS y JS

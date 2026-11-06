@@ -66,6 +66,31 @@ const TEXTOS = {
     errorVideos: "We couldn't load the videos right now.",
     categorias: 'Categories',
     secciones: 'Sections',
+    sitio: 'Site',
+    paginaArchivo: 'WOODZ Archive: the career and discography of WOODZ',
+    descArchivo: 'Unofficial WOODZ fan archive: the career stage by stage, the discography on a turntable and the videos on MOODZFLIX.',
+    paginaMoodzflix: 'MOODZFLIX: all the WOODZ videos',
+    descMoodzflix: 'MOODZFLIX: all the WOODZ videos in one place, with search. Music videos, live clips, stages and vlogs. Unofficial fan project.',
+    irArchivo: 'Go to WOODZ Archive',
+    filtroTipo: 'Filter by type',
+    platoReproducir: 'Play record',
+    platoParar: 'Stop record',
+    reintentar: 'Try again',
+    cargando: 'Loading…',
+    buscar: 'Search',
+    buscarVideos: 'Search videos',
+    buscarPista: 'Title, album, year or category',
+    buscarAyuda: 'Results update as you type. Press slash or Control K to jump here.',
+    limpiar: 'Clear search',
+    filtroCategoria: 'Filter by category',
+    filtroAnio: 'Filter by year',
+    todosAnios: 'Any year',
+    resultados: ({ n, q }) => `${n} ${n === 1 ? 'video' : 'videos'}${q ? ` for “${q}”` : ''}`,
+    sinResultados: (q) => (q ? `No results for “${q}”` : 'No videos with these filters'),
+    sugerencias: 'Check the spelling, try fewer words or look in a category:',
+    quitarFiltros: 'Clear search and filters',
+    lista: 'Playlist',
+    portadaDe: (t) => `Cover of ${t}`,
   },
   es: {
     saltar: 'Saltar al contenido',
@@ -124,6 +149,31 @@ const TEXTOS = {
     errorVideos: 'No pudimos cargar los videos ahora.',
     categorias: 'Categorías',
     secciones: 'Secciones',
+    sitio: 'Sitio',
+    paginaArchivo: 'WOODZ Archive: la carrera y la discografía de WOODZ',
+    descArchivo: 'Archivo fan no oficial de WOODZ: su carrera etapa por etapa, la discografía en un tocadiscos y los videos en MOODZFLIX.',
+    paginaMoodzflix: 'MOODZFLIX: todos los videos de WOODZ',
+    descMoodzflix: 'MOODZFLIX: todos los videos de WOODZ en un solo lugar, con buscador. MVs, live clips, stages y vlogs. Proyecto fan no oficial.',
+    irArchivo: 'Ir a WOODZ Archive',
+    filtroTipo: 'Filtrar por tipo',
+    platoReproducir: 'Poner el disco',
+    platoParar: 'Parar el disco',
+    reintentar: 'Reintentar',
+    cargando: 'Cargando…',
+    buscar: 'Buscar',
+    buscarVideos: 'Buscar videos',
+    buscarPista: 'Título, álbum, año o categoría',
+    buscarAyuda: 'Los resultados cambian mientras escribes. Pulsa barra o Control K para venir aquí.',
+    limpiar: 'Limpiar búsqueda',
+    filtroCategoria: 'Filtrar por categoría',
+    filtroAnio: 'Filtrar por año',
+    todosAnios: 'Cualquier año',
+    resultados: ({ n, q }) => `${n} ${n === 1 ? 'video' : 'videos'}${q ? ` para “${q}”` : ''}`,
+    sinResultados: (q) => (q ? `Sin resultados para “${q}”` : 'No hay videos con estos filtros'),
+    sugerencias: 'Revisa cómo está escrito, prueba con menos palabras o mira una categoría:',
+    quitarFiltros: 'Quitar búsqueda y filtros',
+    lista: 'Lista',
+    portadaDe: (t) => `Portada de ${t}`,
   },
 };
 
@@ -156,6 +206,12 @@ export function aplicarIdioma() {
   document.querySelectorAll('[data-t]').forEach((n) => { n.textContent = t(n.dataset.t); });
   document.querySelectorAll('[data-t-aria]').forEach((n) => n.setAttribute('aria-label', t(n.dataset.tAria)));
   document.querySelectorAll('[data-t-titulo]').forEach((n) => n.setAttribute('title', t(n.dataset.tTitulo)));
+  document.querySelectorAll('[data-t-placeholder]').forEach((n) => n.setAttribute('placeholder', t(n.dataset.tPlaceholder)));
+
+  // Título de la pestaña y descripción en el idioma elegido.
+  const pagina = document.documentElement.dataset.pagina === 'moodzflix' ? 'Moodzflix' : 'Archivo';
+  document.title = t(`pagina${pagina}`);
+  document.querySelector('meta[name="description"]')?.setAttribute('content', t(`desc${pagina}`));
 
   const boton = document.getElementById('boton-idioma');
   if (boton) {

@@ -45,3 +45,50 @@ export function urlEmbed(info) {
 export function urlYouTube(info) {
   return info.tipo === 'video' ? `https://www.youtube.com/watch?v=${info.id}` : `https://www.youtube.com/playlist?list=${info.id}`;
 }
+
+/*
+ * Portada de una lista de reproducción. YouTube no tiene una URL fija para ellas, pero su
+ * servicio oEmbed (público, sin clave) devuelve la miniatura que muestra la propia lista.
+ * Se guarda en el navegador una semana para no preguntar en cada visita.
+ */
+const CLAVE_PORTADAS = 'woodz:portadas-listas';
+const UNA_SEMANA = 7 * 24 * 60 * 60 * 1000;
+const pendientes = new Map();
+
+function leerPortadas() {
+  try {
+    return JSON.parse(localStorage.getItem(CLAVE_PORTADAS)) || {};
+  } catch {
+    return {};
+  }
+}
+
+/** Promesa con la URL de la portada de la lista (o '' si YouTube no la da). */
+export function portadaLista(id) {
+  const guardada = leerPortadas()[id];
+  if (guardada && Date.now() - guardada.fecha < UNA_SEMANA) return Promise.resolve(guardada.url);
+  if (pendientes.has(id)) return pendientes.get(id);
+
+  const lista = `https://www.youtube.com/playlist?list=${encodeURIComponent(id)}`;
+  const promesa = fetch(`https://www.youtube.com/oembed?format=json&url=${encodeURIComponent(lista)}`)
+    .then((r) => (r.ok ? r.json() : null))
+    .then((datos) => {
+      const url = /^https:\/\/i\d?\.ytimg\.com\//.test(datos?.thumbnail_url || '') ? datos.thumbnail_url : '';
+      if (url) {
+        try {
+          const todas = leerPortadas();
+          todas[id] = { url, fecha: Date.now() };
+          localStorage.setItem(CLAVE_PORTADAS, JSON.stringify(todas));
+        } catch { /* sin almacenamiento: se volverá a pedir */ }
+      }
+      return url;
+    })
+    .catch(() => '');
+  pendientes.set(id, promesa);
+  return promesa;
+}
+
+/** Pone en un <img> la portada de la lista cuando llegue (la imagen de reserva se queda si no hay). */
+export function ponerPortadaLista(img, id) {
+  portadaLista(id).then((url) => { if (url) img.src = url; });
+}
