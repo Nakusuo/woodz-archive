@@ -1,0 +1,51 @@
+# Publica la web en GitHub Pages cada vez que se sube algo a develop.
+# Es una vista previa provisional: la publicación definitiva será en Vercel (desde main).
+name: Publicar en GitHub Pages
+
+on:
+  push:
+    branches: [develop]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  construir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build # copia datos y PapaParse a web/ y compila Tailwind
+      - run: npm run prerender # contenido de la hoja en el HTML para leer sin JavaScript
+      # Versión en cada archivo (?v=<commit>): el navegador descarga los estilos y el código nuevos
+      # en vez de mezclar la página nueva con la copia vieja que guarda 10 minutos.
+      - name: Poner versión a CSS y JS
+        run: |
+          V="${GITHUB_SHA::7}"
+          sed -i "s/?v=dev/?v=$V/g" web/*.html
+          find web/js -name '*.js' -not -path 'web/js/vendor/*' -exec sed -i -E "s#(from '[^']+\.js)'#\1?v=$V'#g" {} +
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web
+
+  publicar:
+    needs: construir
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      - id: despliegue
+        uses: actions/deploy-pages@v4

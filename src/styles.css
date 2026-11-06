@@ -1,0 +1,751 @@
+/* Entrada de Tailwind v4. Se compila a web/css/styles.css (npm run build). */
+@import "tailwindcss";
+
+/* Tailwind busca clases solo dentro de la web publicada. */
+@source "../web";
+
+/*
+  Paleta de marca: azul dominante (fondos, degradados, brillos) y naranja de acento
+  (botones, hover, elemento activo). PROVISIONAL: los hex exactos se acuerdan con MOODZ;
+  para cambiarlos basta con tocar este bloque.
+  Contraste comprobado (WCAG AA, 4.5:1): texto y texto-suave sobre fondo y superficies,
+  azul-claro y naranja como texto sobre fondo, fondo sobre naranja (botones).
+  El azul fuerte NO se usa como color de texto (no llega a 4.5:1 sobre el fondo).
+*/
+@theme {
+  --color-azul: #2563eb;
+  --color-azul-claro: #7ea4ff;
+  --color-naranja: #ff8c42;
+
+  --color-fondo: #060b18;
+  --color-superficie: #0c1529;
+  --color-superficie-alta: #142140;
+  --color-linea: #22335c;
+  --color-texto: #edf1fa;
+  --color-texto-suave: #9aa8c6;
+
+  /* Alias: el acento es el naranja. */
+  --color-acento: var(--color-naranja);
+
+  --font-display: "Cinzel", "Trajan Pro", Georgia, serif;
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", monospace;
+
+  --animate-aparecer: aparecer 0.45s ease-out both;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-acento);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-azul) 70%, transparent);
+    color: var(--color-texto);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* ---------- Comunes a las dos páginas ---------- */
+
+  /* Cabecera: transparente arriba y con fondo al bajar (activarCabecera). */
+  .cabecera {
+    transition: background-color 0.3s, border-color 0.3s;
+    border-bottom: 1px solid transparent;
+  }
+  .cabecera[data-solida] {
+    background-color: color-mix(in srgb, var(--color-fondo) 94%, transparent);
+    border-color: var(--color-linea);
+  }
+
+  /* Interruptor Archive / MOODZFLIX de la cabecera: el de la página actual va en naranja. */
+  .sitio {
+    display: flex;
+    align-items: center;
+    gap: 0.125rem;
+    padding: 0.25rem;
+    border-radius: 9999px;
+    background: color-mix(in srgb, var(--color-superficie) 85%, transparent);
+    box-shadow: inset 0 0 0 1px var(--color-linea);
+  }
+  .sitio a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.25rem;
+    padding: 0 0.875rem;
+    border-radius: 9999px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-texto-suave);
+    transition: color 0.2s, background-color 0.2s;
+  }
+  .sitio a:hover {
+    color: var(--color-texto);
+  }
+  .sitio a[aria-current="page"] {
+    background: var(--color-naranja);
+    color: var(--color-fondo);
+  }
+
+  /* Títulos grandes: degradado de texto claro a azul claro y a naranja, con un brillo azul suave. */
+  .titulo-marca {
+    background: linear-gradient(100deg, var(--color-texto) 0%, var(--color-texto) 35%, var(--color-azul-claro) 70%, var(--color-naranja) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 22px color-mix(in srgb, var(--color-azul) 45%, transparent));
+  }
+
+  /* Etiqueta pequeña sobre los títulos de sección. */
+  .antetitulo {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: var(--color-naranja);
+  }
+
+  /* Botón principal (naranja) y secundario (borde). */
+  .boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0 1.5rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: transform 0.2s, box-shadow 0.25s, background-color 0.2s, border-color 0.2s, color 0.2s;
+  }
+  .boton:active {
+    transform: scale(0.98);
+  }
+  .boton-principal {
+    background: var(--color-naranja);
+    color: var(--color-fondo);
+  }
+  .boton-principal:hover {
+    box-shadow: 0 0 0 1px var(--color-naranja), 0 8px 28px -6px color-mix(in srgb, var(--color-naranja) 70%, transparent);
+  }
+  .boton-secundario {
+    border: 1px solid color-mix(in srgb, var(--color-texto) 30%, transparent);
+    background: color-mix(in srgb, var(--color-fondo) 40%, transparent);
+  }
+  .boton-secundario:hover {
+    border-color: var(--color-naranja);
+    color: var(--color-naranja);
+  }
+
+  /* Pastilla de filtro: activa en naranja. */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    min-height: 2.5rem;
+    padding: 0 1rem;
+    border-radius: 9999px;
+    border: 1px solid var(--color-linea);
+    font-size: 0.875rem;
+    white-space: nowrap;
+    color: var(--color-texto);
+    transition: border-color 0.2s, background-color 0.2s, color 0.2s;
+  }
+  .chip:hover {
+    border-color: var(--color-naranja);
+  }
+  .chip[aria-pressed="true"] {
+    border-color: var(--color-naranja);
+    background: var(--color-naranja);
+    color: var(--color-fondo);
+  }
+
+  /* Aparición al bajar (activarAparicion). Solo con JS y sin "reducir movimiento":
+     sin JS el contenido se ve tal cual. */
+  .con-aparicion [data-aparecer] {
+    transition: opacity 0.7s ease-out, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .con-aparicion [data-aparecer]:not([data-visible]) {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+
+  /* Luz azul de fondo de una sección: un degradado fijo, sin animación. */
+  .luz-azul {
+    background:
+      radial-gradient(60% 50% at 15% 0%, color-mix(in srgb, var(--color-azul) 22%, transparent), transparent 70%),
+      radial-gradient(40% 35% at 95% 100%, color-mix(in srgb, var(--color-naranja) 8%, transparent), transparent 70%);
+  }
+
+  /* Carril horizontal con ajuste por tarjeta (filas, discos en móvil, filtros). */
+  .carril {
+    display: flex;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .carril::-webkit-scrollbar {
+    display: none;
+  }
+  .carril > * {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
+
+  /* Bloque animado mientras llegan los datos (RF-06). */
+  .esqueleto {
+    background: linear-gradient(100deg, var(--color-superficie) 30%, var(--color-superficie-alta) 50%, var(--color-superficie) 70%);
+    background-size: 200% 100%;
+    animation: brillo 1.4s ease-in-out infinite;
+  }
+
+  /* Grano de película sobre la portada: textura, no adorno. */
+  .grano {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  /* ---------- Portada del Archivo: filas de clips (RF-07) ---------- */
+  .portada {
+    /* Alto de cada clip: lo que deja libre el título, sin pasar de ~56vw en móvil. */
+    --alto-tesela: min(calc((100svh - 17rem) / 2), 56vw, 15rem);
+    background:
+      radial-gradient(70% 45% at 50% 50%, color-mix(in srgb, var(--color-azul) 30%, transparent), transparent 75%),
+      var(--color-fondo);
+  }
+  .portada-carril {
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+  }
+  .portada-fila {
+    display: flex;
+    gap: 0.75rem;
+    width: max-content;
+    padding-right: 0.75rem; /* mismo hueco al final: al moverse -50% el bucle encaja sin salto */
+    animation: deriva 120s linear infinite;
+  }
+  .portada-fila[data-fila="2"] {
+    animation-direction: reverse;
+  }
+  .portada-fila:hover {
+    animation-play-state: paused;
+  }
+  .tesela {
+    position: relative;
+    height: var(--alto-tesela);
+    aspect-ratio: 16 / 9;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 0.375rem;
+    background: var(--color-superficie);
+    transition: box-shadow 0.8s;
+  }
+  .tesela img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%) contrast(110%) brightness(0.7);
+    transition: filter 1.2s ease;
+  }
+  /* Tinte azul sobre el blanco y negro. */
+  .tesela::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--color-azul);
+    mix-blend-mode: color;
+    opacity: 0.55;
+    transition: opacity 1.2s ease;
+    pointer-events: none;
+  }
+  /* Un clip a la vez recupera el color unos segundos (JS), con un borde naranja. */
+  .tesela[data-color] img {
+    filter: none;
+  }
+  .tesela[data-color]::after {
+    opacity: 0;
+  }
+  .tesela[data-color] {
+    box-shadow: 0 0 0 2px var(--color-naranja), 0 0 30px -4px color-mix(in srgb, var(--color-naranja) 60%, transparent);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .portada-fila {
+      animation: none;
+      margin-inline: auto;
+    }
+  }
+
+  /* ---------- Timeline en acordeón (RF-12 a RF-14) ---------- */
+  .acordeon {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .acordeon > .esqueleto {
+    height: 3.75rem;
+  }
+  .panel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    background:
+      radial-gradient(120% 70% at var(--luz, 70%) 105%, color-mix(in srgb, var(--color-azul) 28%, transparent), transparent 60%),
+      linear-gradient(180deg, var(--color-superficie-alta), var(--color-superficie));
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-azul-claro) 12%, transparent);
+    min-height: 3.75rem;
+    transition: box-shadow 0.3s, min-height 0.5s cubic-bezier(0.3, 0.7, 0.2, 1);
+  }
+  .panel:hover {
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-naranja) 55%, transparent);
+  }
+  .panel[data-abierto] {
+    min-height: 20rem;
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, var(--color-azul-claro) 25%, transparent),
+      0 20px 50px -20px color-mix(in srgb, var(--color-azul) 55%, transparent);
+  }
+  .panel-foto {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%) contrast(110%) brightness(0.4);
+    transform: scale(1.08);
+    transition: transform 1.4s cubic-bezier(0.2, 0.7, 0.2, 1), filter 0.8s;
+  }
+  .panel[data-abierto] .panel-foto {
+    transform: scale(1);
+    filter: grayscale(60%) contrast(110%) brightness(0.45);
+  }
+  .panel-pestana {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0 1.25rem;
+    text-align: left;
+  }
+  .panel[data-abierto] .panel-pestana {
+    align-items: flex-start;
+    padding-top: 1.25rem;
+  }
+  .panel[data-abierto] .panel-pestana > * {
+    visibility: hidden; /* el título lo muestra el cuerpo */
+  }
+  .panel-cuerpo {
+    position: relative;
+    display: none;
+    pointer-events: none;
+  }
+  .panel[data-abierto] .panel-cuerpo {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: inherit;
+    padding: 1.5rem;
+    animation: aparecer 0.5s 0.2s ease-out both;
+  }
+  .panel-cuerpo a {
+    pointer-events: auto;
+  }
+
+  @media (min-width: 768px) {
+    .acordeon {
+      flex-direction: row;
+      height: min(28rem, 60svh);
+    }
+    .acordeon > .esqueleto {
+      height: auto;
+      width: 4.75rem;
+    }
+    .panel {
+      flex: 0 0 4.75rem;
+      min-height: 0;
+      transition: flex-grow 0.7s cubic-bezier(0.3, 0.7, 0.2, 1), box-shadow 0.3s;
+    }
+    .panel[data-abierto] {
+      flex-grow: 1;
+      min-height: 0;
+    }
+    /* Pestaña cerrada: nombre en vertical arriba y año abajo, como en la referencia. */
+    .panel-pestana {
+      flex-direction: column;
+      align-items: center;
+      padding: 1.5rem 0 1.25rem;
+    }
+    .panel-pestana .panel-nombre {
+      writing-mode: vertical-rl;
+    }
+    .panel[data-abierto] .panel-cuerpo {
+      height: 100%;
+      padding: 2rem 2.25rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .panel,
+    .panel-foto {
+      transition: none;
+      transform: none;
+    }
+  }
+
+  /* ---------- Tocadiscos (RF-17, RF-22) ---------- */
+  .plato {
+    position: relative;
+    aspect-ratio: 1;
+    width: 100%;
+    /* Que quepa entero en pantallas bajas (1366×768) junto al título de la sección. */
+    max-width: min(26rem, 58svh, calc(100% - 3rem)); /* el hueco deja sitio al brazo en reposo */
+    margin-inline: auto;
+  }
+  /* Luz bajo el plato: azul en reposo, se calienta hacia naranja al sonar. */
+  .plato::before {
+    content: "";
+    position: absolute;
+    inset: -6%;
+    border-radius: 9999px;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--color-azul) 35%, transparent), transparent);
+    transition: background 1s;
+    pointer-events: none;
+  }
+  .plato[data-girando]::before {
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--color-azul) 30%, transparent) 55%, color-mix(in srgb, var(--color-naranja) 22%, transparent) 80%, transparent);
+  }
+  .vinilo {
+    position: absolute;
+    inset: 4%;
+    border-radius: 9999px;
+    background:
+      repeating-radial-gradient(circle at center, #070c18 0 1.5px, #111a2e 1.5px 3px);
+    box-shadow:
+      0 0 0 1px var(--color-linea),
+      0 25px 60px -15px rgb(0 0 0 / 0.9);
+  }
+  /* Brillo fijo: es la luz de la sala, no gira con el disco. */
+  .vinilo-brillo {
+    position: absolute;
+    inset: 4%;
+    border-radius: 9999px;
+    background: conic-gradient(
+      from 30deg,
+      transparent 0deg,
+      rgb(126 164 255 / 0.12) 25deg,
+      transparent 55deg,
+      transparent 180deg,
+      rgb(255 140 66 / 0.08) 205deg,
+      transparent 235deg
+    );
+    pointer-events: none;
+  }
+  .vinilo-etiqueta {
+    position: absolute;
+    inset: 32%;
+    border-radius: 9999px;
+    overflow: hidden;
+    background: var(--color-superficie-alta);
+    box-shadow: 0 0 0 4px #070c18;
+    transition: opacity 0.35s;
+  }
+  .vinilo-etiqueta[data-cambiando] {
+    opacity: 0;
+  }
+  /* Agujero central. */
+  .vinilo-etiqueta::after {
+    content: "";
+    position: absolute;
+    inset: 46%;
+    border-radius: 9999px;
+    background: var(--color-fondo);
+    box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.8);
+  }
+  /* Brazo: descansa fuera del disco y se apoya en él al sonar (el giro lo lleva vinilo.js). */
+  .brazo {
+    position: absolute;
+    top: -2%;
+    right: -3%;
+    width: 34%;
+    transform-origin: 78% 12%;
+    transform: rotate(-26deg);
+    transition: transform 0.9s cubic-bezier(0.3, 0.7, 0.2, 1);
+    pointer-events: none;
+  }
+  .plato[data-girando] .brazo {
+    transform: rotate(0deg);
+  }
+  /* Con el disco sonando, el brazo se mece apenas, como al seguir el surco. */
+  .plato[data-girando]:not([data-pausado]) .brazo-aguja {
+    animation: vaiven 3.2s 0.9s ease-in-out infinite;
+    transform-origin: 78% 12%;
+    transform-box: view-box;
+  }
+  /* Botón de marcha del tocadiscos. */
+  .plato-boton {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 9999px;
+    background: var(--color-superficie-alta);
+    color: var(--color-texto);
+    box-shadow: inset 0 0 0 1px var(--color-linea);
+    transition: background-color 0.2s, color 0.2s, box-shadow 0.25s;
+  }
+  .plato-boton:hover {
+    box-shadow: inset 0 0 0 1px var(--color-naranja);
+  }
+  .plato-boton[aria-pressed="true"] {
+    background: var(--color-naranja);
+    color: var(--color-fondo);
+    box-shadow: 0 0 22px -4px color-mix(in srgb, var(--color-naranja) 80%, transparent);
+  }
+
+  /* Portadas de discos: elevación y brillo al pasar. */
+  .disco-boton {
+    transition: background-color 0.2s, transform 0.25s;
+  }
+  .disco-boton .disco-mini {
+    transition: box-shadow 0.3s, transform 0.3s;
+  }
+  .disco-boton:hover .disco-mini {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--color-azul) 80%, transparent);
+  }
+  .disco-boton[aria-pressed="true"] .disco-mini {
+    box-shadow: 0 0 0 2px var(--color-naranja);
+  }
+  .portada-grande {
+    box-shadow: 0 18px 40px -14px color-mix(in srgb, var(--color-azul) 75%, transparent), 0 0 0 1px var(--color-linea);
+  }
+
+  /* Barra de desplazamiento fina para la lista de canciones y la de discos. */
+  .lista-canciones,
+  #discos {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-linea) transparent;
+  }
+
+  /* ---------- MOODZFLIX ---------- */
+
+  /* Tarjeta de video: se eleva, brilla y la miniatura se acerca un poco. */
+  .tarjeta {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+  .tarjeta-imagen {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    background: var(--color-superficie);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-azul-claro) 10%, transparent);
+    transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.3s;
+  }
+  .tarjeta-imagen img {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .tarjeta-titulo {
+    margin-top: 0.625rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.35;
+    color: color-mix(in srgb, var(--color-texto) 90%, transparent);
+    transition: color 0.2s;
+  }
+  @media (hover: hover) {
+    .tarjeta:hover .tarjeta-imagen {
+      transform: translateY(-4px);
+      box-shadow: 0 0 0 2px var(--color-naranja), 0 14px 30px -12px color-mix(in srgb, var(--color-azul) 85%, transparent);
+    }
+    .tarjeta:hover .tarjeta-imagen img {
+      transform: scale(1.05);
+    }
+    .tarjeta:hover .tarjeta-titulo {
+      color: var(--color-texto);
+    }
+  }
+  .tarjeta:focus-visible {
+    outline: none;
+  }
+  .tarjeta:focus-visible .tarjeta-imagen {
+    outline: 3px solid var(--color-naranja);
+    outline-offset: 3px;
+  }
+
+  /* Buscador: campo con icono, botón de limpiar y atajo. */
+  .buscador-campo {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-radius: 9999px;
+    background: color-mix(in srgb, var(--color-superficie) 92%, transparent);
+    box-shadow: inset 0 0 0 1px var(--color-linea), 0 10px 30px -15px rgb(0 0 0 / 0.8);
+    transition: box-shadow 0.25s;
+  }
+  .buscador-campo:focus-within {
+    box-shadow: inset 0 0 0 2px var(--color-naranja), 0 0 30px -8px color-mix(in srgb, var(--color-azul) 70%, transparent);
+  }
+  .buscador-campo input {
+    width: 100%;
+    min-height: 3rem;
+    background: transparent;
+    padding: 0 0.5rem;
+    font-size: 1rem; /* 16px: iOS no hace zoom al enfocar */
+    color: var(--color-texto);
+    outline: none;
+  }
+  .buscador-campo input::placeholder {
+    color: var(--color-texto-suave);
+  }
+  .buscador-campo input::-webkit-search-cancel-button {
+    appearance: none;
+  }
+  .buscador-campo:focus-within kbd {
+    display: none;
+  }
+  .selector {
+    min-height: 2.5rem;
+    border-radius: 9999px;
+    border: 1px solid var(--color-linea);
+    background: var(--color-superficie);
+    padding: 0 2.25rem 0 1rem;
+    font-size: 0.875rem;
+    color: var(--color-texto);
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239aa8c6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1rem;
+    transition: border-color 0.2s;
+  }
+  .selector:hover {
+    border-color: var(--color-naranja);
+  }
+  .selector[data-activo] {
+    border-color: var(--color-naranja);
+    color: var(--color-naranja);
+  }
+
+  /* Reproductor (RF-28): se abre con un zoom corto y el fondo se funde. */
+  .reproductor::backdrop {
+    background: rgb(3 6 14 / 0.88);
+  }
+  .reproductor[open] {
+    animation: abrir 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .reproductor[open]::backdrop {
+    animation: fundido 0.3s ease-out;
+  }
+  .reproductor[data-cerrando] {
+    animation: cerrar 0.2s ease-in forwards;
+  }
+  .reproductor[data-cerrando]::backdrop {
+    animation: fundido 0.2s ease-in reverse forwards;
+  }
+}
+
+@keyframes deriva {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@keyframes brillo {
+  from {
+    background-position: 150% 0;
+  }
+  to {
+    background-position: -50% 0;
+  }
+}
+
+@keyframes vaiven {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(0.8deg);
+  }
+}
+
+@keyframes abrir {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.96);
+  }
+}
+
+@keyframes cerrar {
+  to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+}
+
+@keyframes fundido {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Títulos largos del destacado (programas de TV): más pequeños. Fuera de capas para ganar a las utilidades. */
+#destacado-titulo.text-largo {
+  font-size: clamp(1.5rem, 3.2vw, 2.75rem);
+  line-height: 1.1;
+}
