@@ -1,6 +1,6 @@
 {
   "name": "woodz-archive",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "description": "WOODZ Archive y MOODZFLIX: sitio fan de WOODZ, estático, con el contenido en Google Sheets.",
   "type": "module",
