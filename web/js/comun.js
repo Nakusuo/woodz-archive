@@ -8,6 +8,10 @@ import { el, urlSegura } from './seguro.js';
 
 /** Cambia por la imagen de reserva cualquier <img> que falle, una sola vez (RF-34). */
 export function activarImagenesDeReserva() {
+  // Imagen lista: deja de verse el relleno de carga y la imagen aparece (styles.css).
+  document.addEventListener('load', (evento) => {
+    if (evento.target instanceof HTMLImageElement) evento.target.setAttribute('data-cargada', '');
+  }, true);
   document.addEventListener('error', (evento) => {
     const img = evento.target;
     if (!(img instanceof HTMLImageElement) || img.dataset.reserva) return;

@@ -56,7 +56,7 @@
   <main>
     <!-- Destacado (RF-25) -->
     <section id="destacado" class="relative isolate flex h-[78svh] min-h-[32rem] max-h-[56rem] items-end overflow-hidden" aria-labelledby="destacado-titulo">
-      <div id="destacado-medio" class="absolute inset-0 -z-10 bg-superficie"></div>
+      <div id="destacado-medio" class="esqueleto absolute inset-0 -z-10"></div>
       <div class="absolute inset-0 -z-10 bg-gradient-to-r from-fondo/90 via-fondo/30 to-transparent"></div>
       <div class="absolute inset-0 -z-10 bg-[radial-gradient(60%_60%_at_0%_75%,color-mix(in_srgb,var(--color-azul)_35%,transparent),transparent_70%)]"></div>
       <div class="absolute inset-x-0 bottom-0 -z-10 h-2/3 bg-gradient-to-t from-fondo via-fondo/60 to-transparent"></div>
@@ -90,7 +90,7 @@
           </button>
         </div>
         <div class="flex min-w-0 items-center gap-2">
-          <div id="filtro-categorias" class="carril min-w-0 flex-1 gap-2 [mask-image:linear-gradient(90deg,#000_90%,transparent)]" role="group" aria-label="Filter by category" data-t-aria="filtroCategoria"></div>
+          <div id="filtro-categorias" class="carril min-w-0 flex-1 gap-2 [mask-image:linear-gradient(90deg,#000_90%,transparent)]" role="group" aria-label="Filter by category" data-t-aria="filtroCategoria"><span class="esqueleto h-10 w-14 rounded-full"></span><span class="esqueleto h-10 w-28 rounded-full"></span><span class="esqueleto h-10 w-32 rounded-full"></span><span class="esqueleto h-10 w-40 rounded-full"></span><span class="esqueleto h-10 w-24 rounded-full"></span></div>
           <label for="filtro-anio" class="sr-only" data-t="filtroAnio">Filter by year</label>
           <select id="filtro-anio" class="selector shrink-0" hidden></select>
         </div>
@@ -108,17 +108,17 @@
 
     <!-- Filas (RF-26, RF-27) -->
     <div id="filas" class="relative z-10 space-y-8 pb-16 pt-8 sm:space-y-10" aria-busy="true">
-      <div class="flex gap-4 overflow-hidden px-4 sm:px-10" aria-hidden="true">
-        <div class="esqueleto aspect-video w-[70vw] shrink-0 rounded-xl sm:w-80"></div>
-        <div class="esqueleto aspect-video w-[70vw] shrink-0 rounded-xl sm:w-80"></div>
-        <div class="esqueleto aspect-video w-[70vw] shrink-0 rounded-xl sm:w-80"></div>
-        <div class="esqueleto aspect-video w-[70vw] shrink-0 rounded-xl sm:w-80"></div>
+      <div aria-hidden="true">
+        <div class="esqueleto mx-4 mb-3 h-5 w-40 rounded sm:mx-10"></div>
+        <div class="flex gap-4 overflow-hidden px-4 pt-2 sm:px-10"><div class="w-[72vw] max-w-80 shrink-0 sm:w-80"><div class="esqueleto aspect-video rounded-xl"></div><div class="esqueleto mt-3 h-3.5 w-4/5 rounded"></div><div class="esqueleto mt-2 h-3 w-1/2 rounded"></div></div><div class="w-[72vw] max-w-80 shrink-0 sm:w-80"><div class="esqueleto aspect-video rounded-xl"></div><div class="esqueleto mt-3 h-3.5 w-4/5 rounded"></div><div class="esqueleto mt-2 h-3 w-1/2 rounded"></div></div><div class="w-[72vw] max-w-80 shrink-0 sm:w-80"><div class="esqueleto aspect-video rounded-xl"></div><div class="esqueleto mt-3 h-3.5 w-4/5 rounded"></div><div class="esqueleto mt-2 h-3 w-1/2 rounded"></div></div><div class="w-[72vw] max-w-80 shrink-0 sm:w-80"><div class="esqueleto aspect-video rounded-xl"></div><div class="esqueleto mt-3 h-3.5 w-4/5 rounded"></div><div class="esqueleto mt-2 h-3 w-1/2 rounded"></div></div></div>
       </div>
-      <div class="flex gap-4 overflow-hidden px-4 sm:px-10" aria-hidden="true">
-        <div class="esqueleto aspect-video w-[70vw] shrink-0 rounded-xl sm:w-80"></div>
-        <div class="esqueleto aspect-video w-[70vw] shrink-0 rounded-xl sm:w-80"></div>
-        <div class="esqueleto aspect-video w-[70vw] shrink-0 rounded-xl sm:w-80"></div>
-        <div class="esqueleto aspect-video w-[70vw] shrink-0 rounded-xl sm:w-80"></div>
+      <div aria-hidden="true">
+        <div class="esqueleto mx-4 mb-3 h-5 w-40 rounded sm:mx-10"></div>
+        <div class="flex gap-4 overflow-hidden px-4 pt-2 sm:px-10"><div class="w-[72vw] max-w-80 shrink-0 sm:w-80"><div class="esqueleto aspect-video rounded-xl"></div><div class="esqueleto mt-3 h-3.5 w-4/5 rounded"></div><div class="esqueleto mt-2 h-3 w-1/2 rounded"></div></div><div class="w-[72vw] max-w-80 shrink-0 sm:w-80"><div class="esqueleto aspect-video rounded-xl"></div><div class="esqueleto mt-3 h-3.5 w-4/5 rounded"></div><div class="esqueleto mt-2 h-3 w-1/2 rounded"></div></div><div class="w-[72vw] max-w-80 shrink-0 sm:w-80"><div class="esqueleto aspect-video rounded-xl"></div><div class="esqueleto mt-3 h-3.5 w-4/5 rounded"></div><div class="esqueleto mt-2 h-3 w-1/2 rounded"></div></div><div class="w-[72vw] max-w-80 shrink-0 sm:w-80"><div class="esqueleto aspect-video rounded-xl"></div><div class="esqueleto mt-3 h-3.5 w-4/5 rounded"></div><div class="esqueleto mt-2 h-3 w-1/2 rounded"></div></div></div>
+      </div>
+      <div aria-hidden="true">
+        <div class="esqueleto mx-4 mb-3 h-5 w-40 rounded sm:mx-10"></div>
+        <div class="flex gap-4 overflow-hidden px-4 pt-2 sm:px-10"><div class="w-[72vw] max-w-80 shrink-0 sm:w-80"><div class="esqueleto aspect-video rounded-xl"></div><div class="esqueleto mt-3 h-3.5 w-4/5 rounded"></div><div class="esqueleto mt-2 h-3 w-1/2 rounded"></div></div><div class="w-[72vw] max-w-80 shrink-0 sm:w-80"><div class="esqueleto aspect-video rounded-xl"></div><div class="esqueleto mt-3 h-3.5 w-4/5 rounded"></div><div class="esqueleto mt-2 h-3 w-1/2 rounded"></div></div><div class="w-[72vw] max-w-80 shrink-0 sm:w-80"><div class="esqueleto aspect-video rounded-xl"></div><div class="esqueleto mt-3 h-3.5 w-4/5 rounded"></div><div class="esqueleto mt-2 h-3 w-1/2 rounded"></div></div><div class="w-[72vw] max-w-80 shrink-0 sm:w-80"><div class="esqueleto aspect-video rounded-xl"></div><div class="esqueleto mt-3 h-3.5 w-4/5 rounded"></div><div class="esqueleto mt-2 h-3 w-1/2 rounded"></div></div></div>
       </div>
     </div>
 
