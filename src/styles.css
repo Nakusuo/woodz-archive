@@ -674,6 +674,40 @@
     color: var(--color-naranja);
   }
 
+  /* Imágenes con relleno de carga: mientras no llega la imagen se ve el brillo del esqueleto
+     y, al llegar, la imagen aparece con un fundido (activarImagenesDeReserva marca data-cargada). */
+  .tarjeta-imagen,
+  .tesela,
+  img.disco-mini,
+  img.portada-grande,
+  .vinilo-etiqueta {
+    background-image: linear-gradient(100deg, var(--color-superficie) 30%, var(--color-superficie-alta) 50%, var(--color-superficie) 70%);
+    background-size: 200% 100%;
+    animation: brillo 1.4s ease-in-out infinite;
+  }
+  .tarjeta-imagen:has(img[data-cargada]),
+  .tesela:has(img[data-cargada]),
+  img.disco-mini[data-cargada],
+  img.portada-grande[data-cargada],
+  .vinilo-etiqueta:not(:has(img:not([data-cargada]))) {
+    animation: none;
+    background-image: none;
+  }
+  .vinilo-etiqueta img {
+    transition: opacity 0.4s;
+  }
+  .tarjeta-imagen img:not([data-cargada]),
+  .tesela img:not([data-cargada]),
+  .vinilo-etiqueta img:not([data-cargada]) {
+    opacity: 0;
+  }
+  .tarjeta-imagen img {
+    transition: opacity 0.5s, transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .tesela img {
+    transition: opacity 0.5s, filter 1.2s ease;
+  }
+
   /* Reproductor (RF-28): se abre con un zoom corto y el fondo se funde. */
   .reproductor::backdrop {
     background: rgb(3 6 14 / 0.88);

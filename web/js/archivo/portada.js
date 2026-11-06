@@ -48,7 +48,10 @@ function pintarClips(videos) {
     .map(({ v }) => infoYouTube(urlSegura(v.url_video)))
     .filter((yt) => yt?.tipo === 'video');
   const ids = [...new Set(lista.map((yt) => yt.id))].slice(0, POR_FILA * 2);
-  if (!ids.length) return;
+  if (!ids.length) {
+    document.querySelectorAll('.portada-fila').forEach((f) => f.replaceChildren()); // sin clips: fuera el relleno
+    return;
+  }
 
   const tesela = (id) => el('div', { class: 'tesela' },
     el('img', { src: miniaturaYouTube({ tipo: 'video', id }), alt: '', width: 480, height: 270, decoding: 'async' }));
